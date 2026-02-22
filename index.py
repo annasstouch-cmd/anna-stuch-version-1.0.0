@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anna's Touch | Salon de Coiffure Afro</title>
+    <meta name="description" content="Salon de coiffure afro spécialisé en tresses, soins et coiffures protectrices. Une expérience unique à Paris.">
+    <meta name="keywords" content="coiffure afro, tresses, braids, salon paris, cheveux texturés">
+    <meta name="author" content="Anna's Touch">
+    <link rel="icon" href="annas.png" type="image/png">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta property="og:title" content="Anna's Touch | Salon de Coiffure Afro">
+    <meta property="og:description" content="Révélez votre beauté royale avec nos tresses et coiffures afro spécialisées.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1624647970477-96a92df4f6f4">
+    <meta property="og:url" content="https://loloooolazare.vercel.app/">
+    <meta property="og:type" content="website">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#121212', mauve: '#d8b4e2', mauveDark: '#c19bd0',
+                            mauveLight: '#f3e6f5', gold: '#d4af37', goldLight: '#e6c158',
+                            cream: '#fdfbf7', surface: '#ffffff', success: '#10B981',
+                            danger: '#EF4444', warning: '#F59E0B', info: '#3B82F6'
+                        }
+                    },
+                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Montserrat"', 'sans-serif'] },
+                    borderRadius: { '4xl': '2.5rem', '5xl': '3.5rem', '6xl': '4rem' },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite', 'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'slide-in-right': 'slideInRight 0.5s ease-out', 'pulse-slow': 'pulse 3s infinite', 'bounce-slow': 'bounce 2s infinite'
+                    },
+                    keyframes: {
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+                        fadeInUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        slideInRight: { '0%': { opacity: '0', transform: 'translateX(20px)' }, '100%': { opacity: '1', transform: 'translateX(0)' } }
+                    },
+                    screens: { 'xs': '475px', '3xl': '1920px' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #fdfbf7; scroll-behavior: smooth; overflow-x: hidden; }
+        @media (max-width: 640px) { html { font-size: 14px; } }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b8860b; }
+        .luxury-card { background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 20px 60px rgba(0,0,0,0.05); }
+        .admin-card { background: white; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 40px rgba(0,0,0,0.03); }
+        .btn-luxe { background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%); color: #121212; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(212,175,55,0.2); }
+        .btn-luxe:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(212,175,55,0.3); }
+        .btn-mauve { background: linear-gradient(135deg, #d8b4e2 0%, #c19bd0 100%); color: #121212; font-weight: 600; transition: all 0.3s ease; }
+        .btn-mauve:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(216,180,226,0.3); }
+        .gradient-text { background: linear-gradient(135deg, #d4af37 0%, #d8b4e2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .glass-dark { background: rgba(18,18,18,0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(212,175,55,0.2); }
+        .glass-light { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .loyalty-card { background: linear-gradient(135deg, #121212 0%, #2d2d2d 100%); color: #d4af37; position: relative; overflow: hidden; }
+        .loyalty-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%); animation: shimmer 10s infinite linear; }
+        @keyframes shimmer { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #d4af37; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .spinner-small { border: 2px solid #f3f3f3; border-top: 2px solid #d4af37; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        .page-enter-active, .page-leave-active { transition: opacity 0.4s ease, transform 0.4s ease; }
+        .page-enter-from, .page-leave-to { opacity: 0; transform: translateY(10px); }
+        .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+        .fade-enter-from, .fade-leave-to { opacity: 0; }
+        .responsive-img { width: 100%; height: auto; max-width: 100%; }
+        @media (hover: none) and (pointer: coarse) { button, a { min-height: 44px; min-width: 44px; } input, select, textarea { font-size: 16px; } }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .animate-slide-in-right { animation: slideInRight 0.5s ease-out; }
+    </style>
+</head>
+<body class="font-sans text-brand-dark antialiased">
+<div id="app" class="flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav :class="{'py-3 glass-dark': isScrolled, 'py-6 bg-transparent': !isScrolled}"
+         class="fixed w-full z-50 transition-all duration-500 text-white border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" @click="goToHome">
+                <div class="w-17 h-12 rounded-full bg-brand-mauve flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform">
+                    <img src="annas.png" alt="Logo ANNA's Touch" class="w-full h-full object-cover"/>
+                </div>
+                <div class="leading-none">
+                    <h1 class="font-serif text-2xl tracking-widest uppercase">A N N A's</h1>
+                    <span class="text-xs text-brand-mauve tracking-[1.5em] uppercase">Touch</span>
+                </div>
+            </div>
+            <div class="hidden lg:flex items-center space-x-8 text-sm font-medium uppercase tracking-widest">
+                <a href="#" @click.prevent="goToHome" class="hover:text-brand-gold transition-colors">Salon</a>
+                <a href="#prestations" @click.prevent="scrollToSection('prestations')" class="hover:text-brand-gold transition-colors">Prestations</a>
+                <a href="#galerie" @click.prevent="scrollToSection('galerie')" class="hover:text-brand-gold transition-colors">Galerie</a>
+                <div v-if="currentUser" class="flex items-center gap-4 border-l border-white/20 pl-6 ml-2">
+                    <span class="text-brand-gold normal-case font-serif italic hidden xl:inline">Bonjour, {{ currentUser.name.split(' ')[0] }}</span>
+                    <button v-if="currentUser.role === 'admin'" @click="currentPage = 'admin'"
+                            class="bg-brand-mauve text-brand-dark px-4 py-2 rounded-full font-bold hover:bg-white transition text-xs tracking-widest">
+                        <i class="fa-solid fa-crown mr-1"></i> ADMIN
+                    </button>
+                    <button v-else @click="currentPage = 'client-dashboard'"
+                            class="bg-brand-gold text-brand-dark px-4 py-2 rounded-full font-bold hover:bg-white transition text-xs tracking-widest shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                        <i class="fa-solid fa-user mr-1"></i> MON ESPACE
+                    </button>
+                    <button @click="logout" class="text-white/50 hover:text-white" title="Déconnexion">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+                <div v-else class="flex items-center gap-4">
+                    <button @click="currentPage = 'login'" class="bg-brand-mauve text-brand-dark px-6 py-2 rounded-full font-bold hover:bg-white hover:text-brand-gold transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(216,180,226,0.4)]">Connexion</button>
+                    <button @click="startBooking" class="bg-brand-mauve text-brand-dark px-6 py-2 rounded-full font-bold hover:bg-white hover:text-brand-gold transition-all duration-300 transform hover:scale-105 shadow-[0_0_15px_rgba(216,180,226,0.4)]">Prendre RDV</button>
+                </div>
+            </div>
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden text-2xl text-brand-gold p-2">
+                <i class="fa-solid" :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+            </button>
+        </div>
+        <transition name="fade">
+            <div v-if="mobileMenuOpen" class="lg:hidden absolute top-full left-0 w-full bg-brand-dark/95 backdrop-blur-md border-t border-white/10 py-6 px-6">
+                <div class="flex flex-col space-y-6 text-white">
+                    <a @click="mobileMenuOpen = false; goToHome()" class="hover:text-brand-gold transition-colors text-lg font-medium">Salon</a>
+                    <a @click="mobileMenuOpen = false; scrollToSection('prestations')" class="hover:text-brand-gold transition-colors text-lg font-medium">Prestations</a>
+                    <a @click="mobileMenuOpen = false; scrollToSection('galerie')" class="hover:text-brand-gold transition-colors text-lg font-medium">Galerie</a>
+                    <div v-if="currentUser" class="pt-4 border-t border-white/20 space-y-4">
+                        <div class="text-brand-gold font-serif italic">Bonjour, {{ currentUser.name.split(' ')[0] }}</div>
+                        <button @click="mobileMenuOpen = false; currentPage = currentUser.role === 'admin' ? 'admin' : 'client-dashboard'"
+                                class="w-full bg-brand-gold text-brand-dark py-3 rounded-full font-bold text-center">Mon Espace</button>
+                        <button @click="mobileMenuOpen = false; logout()" class="w-full text-white/70 hover:text-white py-2 text-center">Déconnexion</button>
+                    </div>
+                    <div v-else class="pt-4 border-t border-white/20 space-y-4">
+                        <button @click="startBooking" class="w-full bg-brand-mauve text-brand-dark py-3 rounded-full font-bold text-center">Prendre RDV</button>
+                        <button @click="mobileMenuOpen = false; currentPage = 'login'" class="w-full text-white py-3 text-center hover:text-brand-gold">Connexion</button>
+                        <button @click="mobileMenuOpen = false; currentPage = 'signup'" class="w-full bg-brand-mauve text-brand-dark py-3 rounded-full font-bold text-center">S'inscrire</button>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </nav>
+
+    <!-- Notifications Panel -->
+    <transition name="fade">
+        <div v-if="notificationsOpen" class="fixed top-20 right-4 w-80 md:w-96 bg-white rounded-2xl shadow-2xl z-50 border border-gray-200">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="font-bold text-lg">Notifications</h3>
+                <button @click="notificationsOpen = false" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="max-h-96 overflow-y-auto">
+                <div v-if="notifications.length === 0" class="p-8 text-center text-gray-400">
+                    <i class="fa-regular fa-bell text-3xl mb-4"></i>
+                    <p>Aucune notification</p>
+                </div>
+                <div v-for="notif in notifications" :key="notif.id"
+                     class="p-4 border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer"
+                     @click="handleNotificationClick(notif)">
+                    <div class="flex items-start gap-3">
+                        <div :class="notificationIconClass(notif.type)" class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i :class="notificationIcon(notif.type)"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">{{ notif.title }}</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ notif.message }}</p>
+                            <span class="text-xs text-gray-400 mt-2 block">{{ formatRelativeTime(notif.created_at) }}</span>
+                        </div>
+                        <button @click.stop="markAsRead(notif.id)" class="text-gray-300 hover:text-gray-600 ml-2">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow relative">
+        <transition name="fade">
+            <div v-if="loading" class="fixed inset-0 bg-white/80 backdrop-blur-sm z-[100] flex items-center justify-center">
+                <div class="text-center">
+                    <div class="spinner mx-auto mb-4"></div>
+                    <p class="text-brand-dark font-medium">Chargement...</p>
+                </div>
+            </div>
+        </transition>
+
+        <transition name="page" mode="out-in">
+
+            <!-- VIEW: HOME -->
+            <div v-if="currentPage === 'home'" key="home">
+                <header class="relative min-h-screen rounded-b-[4rem] overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 z-0">
+                        <div class="absolute inset-0 bg-gradient-to-b from-brand-dark/60 via-brand-dark/30 to-brand-dark/80 z-10"></div>
+                        <img src="https://www.ma-grande-taille.com/wp-content/uploads/2022/11/pexels-935985.jpg"
+                             alt="Coiffure Afro Art" class="w-full h-full object-cover" loading="eager">
+                    </div>
+                    <div class="relative z-10 text-center px-4 max-w-6xl mx-auto mt-16">
+                        <div class="inline-block mb-6 px-6 py-2 rounded-full border border-brand-gold/50 bg-black/30 backdrop-blur-sm text-brand-gold text-sm uppercase tracking-[0.2em] animate-fade-in-up">
+                            Coiffure &amp; Afro Chic
+                        </div>
+                        <h1 class="font-serif text-4xl xs:text-5xl md:text-7xl lg:text-8xl text-white mb-8 leading-tight animate-fade-in-up" style="animation-delay:0.1s;">
+                            Révélez votre <br><span class="italic text-brand-mauve">Beauté Royale</span>
+                        </h1>
+                        <p class="text-gray-200 text-lg md:text-xl font-light mb-10 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay:0.2s;">
+                            Spécialiste des tresses, soins et coiffures protectrices. Une expérience unique où chaque mèche raconte une histoire.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style="animation-delay:0.3s;">
+                            <button @click="startBooking" class="btn-luxe px-8 sm:px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all">
+                                <i class="fa-solid fa-calendar-check mr-2"></i>Prendre un rendez-vous
+                            </button>
+                            <button @click="goToVideo" class="group flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all backdrop-blur-sm">
+                                <div class="w-10 h-10 rounded-full bg-white text-brand-dark flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-play text-sm ml-1"></i>
+                                </div>
+                                <span class="font-medium">Voir notre salon</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mt-16 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay:0.4s;">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-white mb-1">{{ stats.clients || 0 }}+</div>
+                                <div class="text-sm text-gray-300">Clients Satisfaits</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-white mb-1">{{ stats.appointments || 0 }}+</div>
+                                <div class="text-sm text-gray-300">Rendez-vous</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-white mb-1">{{ stats.services || 0 }}+</div>
+                                <div class="text-sm text-gray-300">Services</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-slow text-white/50">
+                        <i class="fa-solid fa-chevron-down text-2xl"></i>
+                    </div>
+                </header>
+
+                <!-- Prestations -->
+                <section id="prestations" class="py-16 md:py-24 px-4 sm:px-6 bg-brand-cream relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-brand-mauve/10 rounded-full blur-3xl"></div>
+                    <div class="max-w-7xl mx-auto relative z-10">
+                        <div class="text-center mb-12 md:mb-20 px-4">
+                            <h3 class="font-sans font-bold text-brand-gold text-sm tracking-widest uppercase mb-3">Nos Services Signature</h3>
+                            <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl text-brand-dark mb-6">L'Excellence du Tressage</h2>
+                            <p class="text-gray-600 max-w-2xl mx-auto">Découvrez nos prestations sur-mesure, réalisées avec des produits de qualité et une expertise unique.</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4">
+                            <div v-for="service in services" :key="service.id"
+                                 @click="selectServiceAndBook(service)"
+                                 class="group bg-white rounded-3xl md:rounded-[2.5rem] p-4 md:p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer relative overflow-hidden">
+                                <div class="h-64 md:h-80 rounded-2xl md:rounded-[2rem] overflow-hidden relative mb-4 md:mb-6">
+                                    <img :src="service.image_url" :alt="service.name"
+                                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                                    <div class="absolute top-4 right-4 bg-brand-mauve/90 backdrop-blur-md text-brand-dark font-bold px-3 md:px-4 py-2 rounded-full shadow-lg text-sm md:text-base">
+                                        {{ service.price }}€
+                                    </div>
+                                    <div class="absolute bottom-4 left-4 bg-black/70 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full">
+                                        <i class="fa-regular fa-clock mr-1"></i>{{ service.duration }} min
+                                    </div>
+                                </div>
+                                <div class="px-2 md:px-4 pb-4 md:pb-6">
+                                    <h4 class="font-serif text-xl md:text-2xl mb-2">{{ service.name }}</h4>
+                                    <p class="text-gray-500 text-sm md:text-base mb-4 md:mb-6 line-clamp-3">{{ service.description }}</p>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        <span v-for="tag in (service.tags || [])" :key="tag" class="px-2 py-1 bg-brand-mauve/20 text-brand-mauve-dark rounded-full text-xs">{{ tag }}</span>
+                                    </div>
+                                    <button class="w-full border-2 border-brand-dark text-brand-dark py-3 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-brand-dark hover:text-white transition-all duration-300 group">
+                                        <span class="flex items-center justify-center gap-2">Choisir ce style <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-12">
+                            <button @click="loadMoreServices" class="text-brand-gold font-bold hover:underline flex items-center justify-center gap-2 mx-auto">
+                                Voir tous les services <i class="fa-solid fa-arrow-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Promo Banner -->
+                <div v-if="activePromotions.length > 0" class="mx-4 md:mx-10 my-8">
+                    <div class="bg-gradient-to-r from-brand-gold to-brand-mauve rounded-3xl p-6 md:p-8 text-white relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+                        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+                            <div class="mb-4 md:mb-0">
+                                <h3 class="font-serif text-2xl md:text-3xl mb-2">Offre Spéciale !</h3>
+                                <p class="text-white/90">{{ activePromotions[0].description }}</p>
+                            </div>
+                            <div class="text-center md:text-right">
+                                <div class="text-4xl font-bold mb-2">{{ activePromotions[0].discount }}%</div>
+                                <div class="text-sm opacity-90">de réduction</div>
+                                <button @click="startBooking" class="mt-4 bg-white text-brand-dark px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition">Profiter de l'offre</button>
+                            </div>
+                        </div>
+                        <div v-if="activePromotions[0].expires_at" class="mt-6 pt-6 border-t border-white/20">
+                            <div class="flex justify-center space-x-4">
+                                <div class="text-center"><div class="text-2xl font-bold">{{ formatTimeRemaining(activePromotions[0].expires_at).days }}</div><div class="text-xs">Jours</div></div>
+                                <div class="text-center"><div class="text-2xl font-bold">{{ formatTimeRemaining(activePromotions[0].expires_at).hours }}</div><div class="text-xs">Heures</div></div>
+                                <div class="text-center"><div class="text-2xl font-bold">{{ formatTimeRemaining(activePromotions[0].expires_at).minutes }}</div><div class="text-xs">Minutes</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Section -->
+                <section id="video-film" class="py-16 md:py-20 bg-brand-dark text-white rounded-[3rem] md:rounded-[4rem] mx-4 md:mx-10 my-10 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-40"><div class="w-full h-full bg-gradient-to-br from-brand-gold/20 to-brand-mauve/20"></div></div>
+                    <div class="relative z-10 container mx-auto px-4 sm:px-6 text-center py-12 md:py-20">
+                        <div @click="playVideo" class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mx-auto mb-6 md:mb-8 animate-pulse-slow cursor-pointer hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-play text-xl md:text-2xl ml-1"></i>
+                        </div>
+                        <h2 class="font-serif text-3xl sm:text-4xl md:text-6xl mb-6 leading-tight">
+                            "Plus qu'une coiffure,<br><span class="text-brand-gold italic">une thérapie</span>."
+                        </h2>
+                        <p class="text-lg md:text-xl font-light text-gray-300 max-w-2xl mx-auto mb-8">Découvrez l'ambiance apaisante de notre salon privé.</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-12">
+                            <div class="text-center"><div class="text-3xl font-bold text-brand-gold mb-2">98%</div><div class="text-sm text-gray-300">Satisfaction</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-brand-gold mb-2">5★</div><div class="text-sm text-gray-300">Avis Clients</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-brand-gold mb-2">100%</div><div class="text-sm text-gray-300">Naturel</div></div>
+                            <div class="text-center"><div class="text-3xl font-bold text-brand-gold mb-2">24/7</div><div class="text-sm text-gray-300">Support</div></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Galerie -->
+                <section id="galerie" class="py-16 md:py-24 bg-white">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12">
+                            <div class="mb-6 md:mb-0">
+                                <h2 class="font-serif text-3xl sm:text-4xl mb-2">Le Wall of Fame</h2>
+                                <p class="text-gray-500 max-w-2xl">Nos dernières réalisations sur nos sublimes clientes.</p>
+                            </div>
+                            <div class="flex gap-4 text-2xl">
+                                <a href="https://www.instagram.com/annas_touch25?igsh=NW5wMzkwbTF5ejU0" target="_blank" class="text-gray-400 hover:text-brand-mauve transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="https://tiktok.com" target="_blank" class="text-gray-400 hover:text-brand-mauve transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 h-auto md:h-[600px] lg:h-[800px]">
+                            <div class="col-span-2 row-span-2 rounded-3xl overflow-hidden group cursor-pointer relative">
+                                <img src="https://mabraidsbox.fr/cdn/shop/files/dce189eac47ae14c7e35d2aa3b29f58c.jpg?v=1757104155"
+                                     alt="Coiffure Élégante" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div class="absolute bottom-6 left-6 text-white opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                                    <span class="bg-brand-mauve text-brand-dark text-sm font-bold px-4 py-2 rounded-full">Box Braids Goddess</span>
+                                </div>
+                            </div>
+                            <div v-for="item in galleryImages.slice(0, 4)" :key="item.id" class="rounded-3xl overflow-hidden group cursor-pointer relative">
+                                <img :src="item.image_url" :alt="item.title || 'Galerie'"
+                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity"></div>
+                                <div class="absolute bottom-4 left-4 text-white">
+                                    <span class="bg-brand-mauve/90 text-brand-dark text-[10px] tracking-widest uppercase font-bold px-3 py-1 rounded-full shadow-sm">{{ item.style }}</span>
+                                </div>
+                            </div>
+                            <div @click="showShareModal = true" class="rounded-3xl overflow-hidden group cursor-pointer bg-gradient-to-br from-brand-mauve to-brand-mauve-dark flex items-center justify-center text-center p-6">
+                                <div>
+                                    <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-plus text-2xl text-white"></i>
+                                    </div>
+                                    <h3 class="font-serif text-2xl text-white mb-2">Vous ?</h3>
+                                    <p class="text-white/80 text-sm">Rejoignez nos muses et partagez votre transformation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Testimonials -->
+                <section class="py-16 md:py-24 bg-brand-cream">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+                        <div class="text-center mb-12">
+                            <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl mb-6">Ce qu'en pensent nos clientes</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                            <div v-for="testimonial in testimonials" :key="testimonial.id" class="bg-white rounded-3xl p-6 md:p-8 shadow-lg">
+                                <div class="flex items-center mb-6">
+                                    <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                                        <img :src="testimonial.avatar" :alt="testimonial.name" class="w-full h-full object-cover">
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-lg">{{ testimonial.name }}</h4>
+                                        <div class="flex text-brand-gold"><i v-for="i in 5" :key="i" class="fa-solid fa-star"></i></div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 italic">"{{ testimonial.comment }}"</p>
+                                <div class="mt-4 text-sm text-gray-500">{{ formatDate(testimonial.created_at) }} • {{ testimonial.service }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- VIEW: LOGIN -->
+            <div v-else-if="currentPage === 'login'" key="login" class="min-h-screen bg-gradient-to-br from-brand-dark to-gray-900 flex items-center justify-center p-4">
+                <div class="w-full max-w-md">
+                    <div class="luxury-card p-8 md:p-10 rounded-[2.5rem] text-center animate-fade-in-up">
+                        <div class="w-20 h-20 bg-brand-gold rounded-full flex items-center justify-center mx-auto mb-6 overflow-hidden">
+                            <img src="annas.png" alt="Logo ANNA's Touch" class="w-full h-full object-cover"/>
+                        </div>
+                        <h2 class="text-3xl font-serif mb-2">Connexion</h2>
+                        <p class="text-gray-500 mb-8">Accédez à votre espace personnel</p>
+                        <form @submit.prevent="login" class="space-y-6">
+                            <div class="relative">
+                                <i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <input v-model="loginForm.email" type="email" placeholder="Email" required
+                                       class="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/30 outline-none transition">
+                            </div>
+                            <div class="relative">
+                                <i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <input v-model="loginForm.password" type="password" placeholder="Mot de passe" required
+                                       class="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-gold focus:ring-2 focus:ring-brand-gold/30 outline-none transition">
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <label class="flex items-center">
+                                    <input type="checkbox" v-model="loginForm.remember" class="mr-2 h-5 w-5 text-brand-gold rounded">
+                                    <span class="text-sm text-gray-600">Se souvenir de moi</span>
+                                </label>
+                                <button type="button" @click="showForgotPassword = true" class="text-sm text-brand-gold hover:underline">Mot de passe oublié ?</button>
+                            </div>
+                            <div v-if="loginError" class="bg-red-50 text-red-600 p-4 rounded-xl text-sm">
+                                <i class="fa-solid fa-exclamation-circle mr-2"></i>{{ loginError }}
+                            </div>
+                            <button type="submit" :disabled="loading" class="w-full btn-luxe py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span v-if="loading" class="flex items-center justify-center"><div class="spinner-small mr-2"></div>Connexion...</span>
+                                <span v-else>Se connecter</span>
+                            </button>
+                        </form>
+                        <p class="mt-8 text-gray-600">Pas encore de compte ? <button @click="currentPage = 'signup'" class="text-brand-gold font-bold hover:underline">Créer un compte</button></p>
+                        <button @click="currentPage = 'home'" class="mt-6 text-gray-400 text-sm hover:text-brand-dark transition-colors"><i class="fa-solid fa-arrow-left mr-2"></i>Retour à l'accueil</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: SIGNUP -->
+            <div v-else-if="currentPage === 'signup'" key="signup" class="min-h-screen bg-gradient-to-br from-brand-dark to-gray-900 flex items-center justify-center p-4">
+                <div class="w-full max-w-md">
+                    <div class="luxury-card p-8 md:p-10 rounded-[2.5rem] animate-fade-in-up">
+                        <div class="w-20 h-20 bg-brand-mauve rounded-full flex items-center justify-center mx-auto mb-6 text-3xl text-brand-dark"><i class="fa-solid fa-user-plus"></i></div>
+                        <h2 class="text-3xl font-serif mb-2 text-center">Créer un compte</h2>
+                        <p class="text-gray-500 mb-8 text-center">Rejoignez notre communauté</p>
+                        <form @submit.prevent="signup" class="space-y-5">
+                            <div class="relative"><i class="fa-regular fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i><input v-model="signupForm.name" type="text" placeholder="Nom complet" required class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-mauve focus:ring-2 focus:ring-brand-mauve/30 outline-none transition"></div>
+                            <div class="relative"><i class="fa-regular fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i><input v-model="signupForm.email" type="email" placeholder="Email" required class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-mauve focus:ring-2 focus:ring-brand-mauve/30 outline-none transition"></div>
+                            <div class="relative"><i class="fa-solid fa-phone absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i><input v-model="signupForm.phone" type="tel" placeholder="Téléphone" required class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-mauve focus:ring-2 focus:ring-brand-mauve/30 outline-none transition"></div>
+                            <div class="relative"><i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i><input v-model="signupForm.password" type="password" placeholder="Mot de passe" required minlength="6" class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-mauve focus:ring-2 focus:ring-brand-mauve/30 outline-none transition"></div>
+                            <div class="relative"><i class="fa-solid fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i><input v-model="signupForm.confirmPassword" type="password" placeholder="Confirmer le mot de passe" required class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-mauve focus:ring-2 focus:ring-brand-mauve/30 outline-none transition"></div>
+                            <label class="flex items-start">
+                                <input type="checkbox" v-model="signupForm.agreeTerms" required class="mt-1 mr-3 h-5 w-5 text-brand-mauve rounded">
+                                <span class="text-sm text-gray-600">J'accepte les <button type="button" @click="showTerms = true" class="text-brand-mauve hover:underline">conditions générales</button> et la <button type="button" @click="showPrivacy = true" class="text-brand-mauve hover:underline">politique de confidentialité</button></span>
+                            </label>
+                            <button type="submit" :disabled="loading" class="w-full btn-mauve py-4 rounded-xl font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span v-if="loading" class="flex items-center justify-center"><div class="spinner-small mr-2"></div>Création du compte...</span>
+                                <span v-else>S'inscrire</span>
+                            </button>
+                        </form>
+                        <p class="mt-8 text-center text-gray-600">Déjà membre ? <button @click="currentPage = 'login'" class="text-brand-mauve font-bold hover:underline">Se connecter</button></p>
+                        <button @click="currentPage = 'home'" class="mt-6 text-gray-400 text-sm hover:text-brand-dark transition-colors mx-auto block"><i class="fa-solid fa-arrow-left mr-2"></i>Retour à l'accueil</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: CLIENT DASHBOARD -->
+            <!-- BUG FIX: Ajout de v-if="currentUser" pour éviter les erreurs si currentUser est null -->
+            <div v-else-if="currentPage === 'client-dashboard' && currentUser" key="client" class="min-h-screen bg-gray-50 pt-24 pb-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12">
+                        <div>
+                            <h2 class="font-serif text-3xl sm:text-4xl text-brand-dark mb-2">Mon Espace Personnel</h2>
+                            <p class="text-gray-500">Bienvenue, {{ currentUser.name }} ! Gérez vos rendez-vous et vos avantages.</p>
+                        </div>
+                        <div class="flex gap-3 mt-4 md:mt-0">
+                            <button @click="startBooking" class="bg-brand-gold text-white px-4 py-2 rounded-full text-sm font-bold hover:bg-brand-goldLight transition"><i class="fa-solid fa-plus mr-2"></i>Nouveau RDV</button>
+                            <button @click="refreshData" class="bg-white text-gray-600 px-4 py-2 rounded-full text-sm font-bold hover:bg-gray-100 transition border"><i class="fa-solid fa-rotate mr-2"></i>Actualiser</button>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+                        <div class="loyalty-card rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <i class="fa-solid fa-crown text-2xl text-brand-gold"></i>
+                                <span class="text-xs font-bold uppercase tracking-widest border border-brand-gold px-2 py-1 rounded text-brand-gold">{{ loyaltyTier }}</span>
+                            </div>
+                            <h3 class="text-4xl font-bold text-white mb-2">{{ currentUser.points || 0 }}</h3>
+                            <p class="text-gray-300 text-sm">Points de fidélité</p>
+                            <div class="mt-4 text-xs text-gray-400">100 points = -10€ sur votre prochain RDV</div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-3"><i class="fa-solid fa-calendar-check"></i></div>
+                                <h4 class="font-bold text-lg">Prochains RDV</h4>
+                            </div>
+                            <div class="text-4xl font-bold text-gray-800 mb-2">{{ upcomingAppointmentsCount }}</div>
+                            <p class="text-gray-500 text-sm">Rendez-vous confirmés</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-3"><i class="fa-solid fa-euro-sign"></i></div>
+                                <h4 class="font-bold text-lg">Total Dépensé</h4>
+                            </div>
+                            <div class="text-4xl font-bold text-gray-800 mb-2">{{ totalSpent }}€</div>
+                            <p class="text-gray-500 text-sm">Cette année</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mr-3"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                                <h4 class="font-bold text-lg">Dernière Visite</h4>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-800 mb-2" v-if="lastAppointment">{{ formatRelativeTime(lastAppointment.date) }}</div>
+                            <div v-else class="text-gray-400 text-sm">Aucune visite</div>
+                            <p class="text-gray-500 text-sm">Revenez vite !</p>
+                        </div>
+                    </div>
+
+                    <div class="grid lg:grid-cols-3 gap-6 md:gap-8">
+                        <div class="lg:col-span-2">
+                            <!-- Appointments -->
+                            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 mb-6">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="text-xl font-bold flex items-center"><i class="fa-solid fa-calendar-days text-brand-mauve mr-3"></i>Mes Rendez-vous</h3>
+                                </div>
+                                <!-- BUG FIX: On affiche un état de chargement puis les données réelles -->
+                                <div v-if="appointmentsLoading" class="text-center py-12">
+                                    <div class="spinner mx-auto mb-4"></div>
+                                    <p class="text-gray-500">Chargement de vos rendez-vous...</p>
+                                </div>
+                                <div v-else-if="myAppointments.length === 0" class="text-center py-12">
+                                    <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"><i class="fa-regular fa-calendar-xmark text-3xl text-gray-400"></i></div>
+                                    <p class="text-gray-500 mb-4">Aucun rendez-vous pour le moment</p>
+                                    <button @click="startBooking" class="text-brand-gold font-bold hover:underline">Prendre un rendez-vous</button>
+                                </div>
+                                <div v-else class="space-y-4">
+                                    <div v-for="apt in myAppointments" :key="apt.id"
+                                         class="border border-gray-200 rounded-2xl p-5 hover:shadow-md transition-shadow"
+                                         :class="statusClass(apt.status)">
+                                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                            <div class="flex-1">
+                                                <div class="flex items-center gap-3 mb-3">
+                                                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" :class="statusBadge(apt.status)">{{ translateStatus(apt.status) }}</span>
+                                                    <span class="text-xs text-gray-500"><i class="fa-regular fa-clock mr-1"></i>{{ apt.duration || 120 }} min</span>
+                                                </div>
+                                                <h4 class="font-bold text-lg mb-2">{{ apt.service_name }}</h4>
+                                                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                                                    <div class="flex items-center"><i class="fa-regular fa-calendar mr-2"></i>{{ formatDate(apt.date) }}</div>
+                                                    <div class="flex items-center"><i class="fa-regular fa-clock mr-2"></i>{{ apt.time }}</div>
+                                                    <div class="flex items-center font-bold text-brand-gold"><i class="fa-solid fa-euro-sign mr-1"></i>{{ apt.total_price || apt.price }}</div>
+                                                </div>
+                                                <!-- BUG FIX: extras peut être un tableau de strings -->
+                                                <div v-if="apt.extras && apt.extras.length" class="mt-3">
+                                                    <div class="flex flex-wrap gap-2">
+                                                        <span v-for="extra in apt.extras" :key="extra" class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">+ {{ extra }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex flex-col sm:flex-row gap-2">
+                                                <button v-if="canCancel(apt)" @click="cancelAppointment(apt.id)" class="px-4 py-2 border border-red-200 text-red-600 rounded-full text-sm hover:bg-red-50 transition">Annuler</button>
+                                                <button v-if="apt.status === 'confirmed'" @click="viewAppointmentDetails(apt)" class="px-4 py-2 bg-brand-dark text-white rounded-full text-sm hover:bg-gray-800 transition">Détails</button>
+                                                <button v-if="apt.status === 'completed'" @click="addReview(apt)" class="px-4 py-2 border border-brand-gold text-brand-gold rounded-full text-sm hover:bg-brand-gold/10 transition">Noter</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reviews -->
+                            <!-- BUG FIX: userReviews était manquant dans le setup -->
+                            <div v-if="userReviews.length > 0" class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
+                                <h3 class="text-xl font-bold mb-6 flex items-center"><i class="fa-solid fa-star text-brand-gold mr-3"></i>Mes Avis</h3>
+                                <div class="space-y-4">
+                                    <div v-for="review in userReviews" :key="review.id" class="border border-gray-100 rounded-2xl p-5">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div class="flex items-center">
+                                                <div class="flex text-brand-gold mr-3">
+                                                    <i v-for="i in 5" :key="i" :class="i <= review.rating ? 'fa-solid' : 'fa-regular'" class="fa-star"></i>
+                                                </div>
+                                                <span class="font-bold">{{ review.service_name }}</span>
+                                            </div>
+                                            <span class="text-sm text-gray-500">{{ formatDate(review.created_at) }}</span>
+                                        </div>
+                                        <p class="text-gray-600">{{ review.comment }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-xl font-bold mb-6 flex items-center"><i class="fa-solid fa-user-circle text-brand-mauve mr-3"></i>Mon Profil</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <div class="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-brand-gold">
+                                            <img :src="currentUser.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.name) + '&background=d4af37&color=121212&bold=true'"
+                                                 :alt="currentUser.name" class="w-full h-full object-cover">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-lg">{{ currentUser.name }}</h4>
+                                            <p class="text-gray-500 text-sm">{{ currentUser.email }}</p>
+                                            <p class="text-gray-500 text-sm">{{ currentUser.phone }}</p>
+                                        </div>
+                                    </div>
+                                    <button @click="editProfile" class="w-full border-2 border-brand-dark text-brand-dark py-3 rounded-full font-bold hover:bg-brand-dark hover:text-white transition">Modifier le profil</button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-xl font-bold mb-6 flex items-center"><i class="fa-solid fa-tags text-brand-gold mr-3"></i>Mes Promotions</h3>
+                                <div v-if="userPromotions.length === 0" class="text-center py-4">
+                                    <p class="text-gray-500 mb-4">Aucune promotion active</p>
+                                </div>
+                                <div v-else class="space-y-4">
+                                    <div v-for="promo in userPromotions" :key="promo.id" class="border border-brand-mauve/30 rounded-2xl p-4">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div><span class="font-bold text-lg">{{ promo.code }}</span><div class="text-sm text-gray-500">{{ promo.description }}</div></div>
+                                            <span class="text-brand-gold font-bold">{{ promo.discount }}{{ promo.discount_type === 'percentage' ? '%' : '€' }}</span>
+                                        </div>
+                                        <div class="text-xs text-gray-500">Valable jusqu'au {{ formatDate(promo.valid_until) }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-xl font-bold mb-6 flex items-center"><i class="fa-solid fa-trophy text-brand-gold mr-3"></i>Progression Fidélité</h3>
+                                <div class="mb-4">
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span>{{ currentUser.points || 0 }} points</span>
+                                        <span>{{ nextTierPoints }} pts pour {{ nextTier }}</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-brand-gold h-2 rounded-full transition-all duration-500" :style="{ width: loyaltyProgress + '%' }"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm text-gray-600">
+                                    <p class="mb-2">Votre niveau : <span class="font-bold">{{ loyaltyTier }}</span></p>
+                                    <p>Prochain avantage : <span class="font-bold">{{ nextTierReward }}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: BOOKING -->
+            <div v-else-if="currentPage === 'booking'" key="booking" class="min-h-screen bg-gradient-to-b from-brand-cream to-white pt-20 pb-12">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-500">Étape {{ bookingStep }} sur 4</span>
+                            <span class="text-sm font-medium text-brand-gold">{{ bookingProgress }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-brand-mauve to-brand-gold h-2 rounded-full transition-all duration-500" :style="{ width: bookingProgress + '%' }"></div>
+                        </div>
+                    </div>
+                    <div class="luxury-card rounded-[2.5rem] overflow-hidden">
+                        <div class="bg-gradient-to-r from-brand-dark to-gray-900 p-6 md:p-8">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h2 class="font-serif text-2xl md:text-3xl text-white">Réservation</h2>
+                                    <p class="text-brand-gold text-sm mt-1">{{ bookingSteps[bookingStep - 1].description }}</p>
+                                </div>
+                                <button @click="closeBooking" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white hover:text-brand-dark transition"><i class="fa-solid fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="p-4 md:p-8 min-h-[500px]">
+
+                            <!-- BUG FIX: Chaque étape est son propre bloc conditionnel (pas de transition imbriquée mal fermée) -->
+
+                            <!-- STEP 1 -->
+                            <div v-if="bookingStep === 1">
+                                <h3 class="text-2xl md:text-3xl font-serif font-bold mb-6 md:mb-8 gradient-text">1. Choisissez votre prestation</h3>
+                                <div class="flex overflow-x-auto gap-2 mb-6 no-scrollbar">
+                                    <button @click="serviceCategoryFilter = ''"
+                                            :class="serviceCategoryFilter === '' ? 'bg-brand-mauve text-white' : 'bg-gray-100 text-gray-600'"
+                                            class="px-4 py-2 rounded-full whitespace-nowrap transition">Tous</button>
+                                    <button v-for="category in serviceCategories" :key="category.id"
+                                            @click="serviceCategoryFilter = category.id"
+                                            :class="serviceCategoryFilter === category.id ? 'bg-brand-mauve text-white' : 'bg-gray-100 text-gray-600'"
+                                            class="px-4 py-2 rounded-full whitespace-nowrap transition">{{ category.name }}</button>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                                    <div v-for="service in filteredServices" :key="service.id"
+                                         @click="selectService(service)"
+                                         :class="bookingData.service?.id === service.id ? 'ring-2 ring-brand-mauve bg-brand-mauveLight/20' : 'hover:border-brand-mauve'"
+                                         class="bg-white border-2 border-gray-200 rounded-2xl p-5 cursor-pointer transition-all duration-300 hover:shadow-lg group">
+                                        <div class="h-40 rounded-xl overflow-hidden mb-4 relative">
+                                            <img :src="service.image_url" :alt="service.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                            <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-brand-dark font-bold px-3 py-1 rounded-full shadow">{{ service.price }}€</div>
+                                            <div class="absolute bottom-3 left-3 bg-black/70 text-white text-xs px-2 py-1 rounded-full">{{ service.duration }} min</div>
+                                        </div>
+                                        <h4 class="font-bold text-lg mb-2">{{ service.name }}</h4>
+                                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ service.description }}</p>
+                                        <div class="flex flex-wrap gap-1 mb-4">
+                                            <span v-for="tag in (service.tags || []).slice(0, 2)" :key="tag" class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">{{ tag }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-brand-mauve font-semibold">Sélectionner</span>
+                                            <i class="fa-solid fa-arrow-right text-brand-mauve group-hover:translate-x-2 transition-transform"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="filteredServices.length === 0" class="text-center py-12">
+                                    <p class="text-gray-500">Aucun service disponible dans cette catégorie.</p>
+                                </div>
+                            </div>
+
+                            <!-- STEP 2 -->
+                            <div v-else-if="bookingStep === 2" class="animate-slide-in-right">
+                                <button @click="bookingStep = 1" class="mb-6 text-brand-mauveDark hover:text-brand-mauve flex items-center"><i class="fa-solid fa-arrow-left mr-2"></i> Retour</button>
+                                <h3 class="text-2xl md:text-3xl font-serif font-bold mb-6 md:mb-8 gradient-text">2. Choisissez votre créneau</h3>
+                                <div v-if="bookingData.service" class="mb-8 p-4 bg-gray-50 rounded-2xl">
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+                                        <div>
+                                            <h4 class="font-bold text-lg">{{ bookingData.service.name }}</h4>
+                                            <p class="text-gray-600 text-sm">{{ bookingData.service.duration }} min • {{ bookingData.service.price }}€</p>
+                                        </div>
+                                        <button @click="bookingStep = 1" class="mt-2 sm:mt-0 text-brand-mauve text-sm underline">Modifier</button>
+                                    </div>
+                                </div>
+                                <div class="mb-8">
+                                    <label class="block text-lg font-bold mb-4 text-gray-700">Sélectionnez une date</label>
+                                    <div class="flex justify-between items-center mb-4">
+                                        <button @click="prevMonth" class="p-2 hover:bg-gray-100 rounded-full"><i class="fa-solid fa-chevron-left"></i></button>
+                                        <h4 class="font-bold text-lg">{{ calendarMonth }}</h4>
+                                        <button @click="nextMonth" class="p-2 hover:bg-gray-100 rounded-full"><i class="fa-solid fa-chevron-right"></i></button>
+                                    </div>
+                                    <div class="grid grid-cols-7 gap-2 mb-4">
+                                        <div v-for="day in ['L', 'M', 'M', 'J', 'V', 'S', 'D']" :key="day" class="text-center text-gray-500 text-sm font-bold">{{ day }}</div>
+                                        <div v-for="(day, idx) in calendarDays" :key="idx"
+                                             @click="!day.isPast && selectDate(day.date)"
+                                             :class="[
+                                                 day.isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400',
+                                                 day.isToday ? 'border-2 border-brand-gold' : '',
+                                                 day.date === bookingData.date ? 'bg-brand-mauve text-white' : 'hover:bg-gray-100',
+                                                 day.isPast ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'
+                                             ]"
+                                             class="h-12 rounded-xl flex flex-col items-center justify-center text-sm transition">
+                                            <div>{{ day.day }}</div>
+                                            <div v-if="day.hasSlots && !day.isPast" class="w-1 h-1 bg-green-500 rounded-full mt-1"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                                        <button v-for="quickDate in quickDates" :key="quickDate.date"
+                                                @click="selectDate(quickDate.date)"
+                                                :class="bookingData.date === quickDate.date ? 'bg-brand-mauve text-white' : 'bg-gray-100'"
+                                                class="px-4 py-2 rounded-full whitespace-nowrap transition text-sm">{{ quickDate.label }}</button>
+                                    </div>
+                                </div>
+                                <div v-if="bookingData.date">
+                                    <label class="block text-lg font-bold mb-4 text-gray-700">Horaires disponibles</label>
+                                    <div class="flex gap-2 mb-4">
+                                        <button v-for="period in timePeriods" :key="period"
+                                                @click="timeFilter = period"
+                                                :class="timeFilter === period ? 'bg-brand-dark text-white' : 'bg-gray-100'"
+                                                class="px-4 py-2 rounded-full text-sm transition">{{ period }}</button>
+                                        <button @click="timeFilter = 'all'"
+                                                :class="timeFilter === 'all' ? 'bg-brand-dark text-white' : 'bg-gray-100'"
+                                                class="px-4 py-2 rounded-full text-sm transition">Tous</button>
+                                    </div>
+                                    <div v-if="slotsLoading" class="text-center py-8">
+                                        <div class="spinner mx-auto mb-3"></div>
+                                        <p class="text-gray-500 text-sm">Chargement des créneaux...</p>
+                                    </div>
+                                    <div v-else-if="filteredTimeSlots.length > 0" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                                        <button v-for="slot in filteredTimeSlots" :key="slot.time"
+                                                @click="selectTime(slot.time)"
+                                                :disabled="!slot.available"
+                                                :class="[bookingData.time === slot.time ? 'bg-brand-mauve text-white border-brand-mauve shadow-lg' : 'bg-white', slot.available ? 'hover:border-brand-mauve' : 'opacity-50 cursor-not-allowed bg-gray-100']"
+                                                class="py-3 px-2 rounded-xl border-2 text-sm transition-all duration-300">
+                                            {{ slot.time }}
+                                            <div v-if="!slot.available" class="text-xs mt-1">Complet</div>
+                                        </button>
+                                    </div>
+                                    <div v-else class="text-center py-8 bg-gray-50 rounded-2xl">
+                                        <i class="fa-regular fa-calendar-xmark text-3xl text-gray-400 mb-3"></i>
+                                        <p class="text-gray-600">Aucun créneau disponible pour cette date.</p>
+                                        <p class="text-sm text-gray-500 mt-2">Essayez une autre date ou contactez-nous.</p>
+                                    </div>
+                                    <div class="mt-8 flex justify-end">
+                                        <button @click="nextStep" :disabled="!bookingData.time" class="btn-luxe px-8 py-4 rounded-full text-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                                            Continuer <i class="fa-solid fa-arrow-right ml-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STEP 3 -->
+                            <div v-else-if="bookingStep === 3" class="animate-slide-in-right">
+                                <button @click="bookingStep = 2" class="mb-6 text-brand-mauveDark hover:text-brand-mauve flex items-center"><i class="fa-solid fa-arrow-left mr-2"></i> Retour</button>
+                                <h3 class="text-2xl md:text-3xl font-serif font-bold mb-6 md:mb-8 gradient-text">3. Personnalisez votre rendez-vous</h3>
+                                <div class="mb-8 p-6 bg-gradient-to-r from-gray-50 to-white rounded-2xl border border-gray-200">
+                                    <div class="grid md:grid-cols-3 gap-6">
+                                        <div><div class="text-sm text-gray-500 mb-1">Service</div><div class="font-bold text-lg">{{ bookingData.service.name }}</div></div>
+                                        <div><div class="text-sm text-gray-500 mb-1">Date & Heure</div><div class="font-bold text-lg">{{ formatDate(bookingData.date) }}</div><div class="text-gray-600">{{ bookingData.time }}</div></div>
+                                        <div><div class="text-sm text-gray-500 mb-1">Durée & Prix</div><div class="font-bold text-lg">{{ bookingData.service.duration }} min</div><div class="text-brand-gold font-bold text-xl">{{ bookingData.service.price }}€</div></div>
+                                    </div>
+                                </div>
+                                <div class="mb-8">
+                                    <h4 class="font-bold text-xl mb-6 text-brand-mauveDark flex items-center"><i class="fa-solid fa-plus-circle mr-3"></i> Services Additionnels</h4>
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <label v-for="extra in availableExtras" :key="extra.id"
+                                               :class="bookingData.extras.some(e => e.id === extra.id) ? 'border-brand-mauve bg-brand-mauveLight/30' : 'hover:border-brand-mauve'"
+                                               class="flex items-center justify-between p-4 border-2 border-gray-200 rounded-2xl cursor-pointer transition group">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" :value="extra" v-model="bookingData.extras" class="form-checkbox h-6 w-6 text-brand-mauve rounded-lg">
+                                                <div class="ml-4"><div class="font-medium">{{ extra.name }}</div><div class="text-sm text-gray-500">{{ extra.description }}</div></div>
+                                            </div>
+                                            <div class="text-right"><div class="text-brand-gold font-bold">+{{ extra.price }}€</div><div class="text-xs text-gray-500">{{ extra.duration }} min</div></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-8">
+                                    <h4 class="font-bold text-xl mb-6 text-brand-mauveDark flex items-center"><i class="fa-solid fa-heart mr-3"></i> Vos Préférences</h4>
+                                    <div class="space-y-6">
+                                        <div>
+                                            <label class="block text-sm font-bold text-gray-500 mb-2">Film/Série préféré(e)</label>
+                                            <div class="relative">
+                                                <i class="fa-solid fa-film absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                                <input type="text" v-model="bookingData.preferences.movie" placeholder="Ex: Friends, Black Panther..."
+                                                       class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-mauve focus:ring-2 focus:ring-brand-mauve/30 outline-none transition">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-bold text-gray-500 mb-2">Style de musique préféré</label>
+                                            <div class="flex flex-wrap gap-2">
+                                                <button v-for="genre in musicGenres" :key="genre"
+                                                        type="button"
+                                                        @click="toggleMusicGenre(genre)"
+                                                        :class="bookingData.preferences.music.includes(genre) ? 'bg-brand-mauve text-white' : 'bg-gray-100 text-gray-600'"
+                                                        class="px-4 py-2 rounded-full text-sm transition">{{ genre }}</button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-bold text-gray-500 mb-2">Instructions spéciales</label>
+                                            <textarea v-model="bookingData.preferences.instructions" placeholder="Allergies, préférences particulières..." rows="3"
+                                                      class="w-full p-4 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-mauve outline-none transition"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-8 p-6 bg-gradient-to-r from-yellow-50 to-amber-50 border-l-4 border-brand-gold rounded-r-xl">
+                                    <div class="flex items-start">
+                                        <i class="fa-solid fa-circle-info text-brand-gold text-xl mt-1 mr-4"></i>
+                                        <div>
+                                            <h3 class="text-lg font-bold text-gray-800 mb-2">Important avant votre rendez-vous</h3>
+                                            <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                                                <li>Vos cheveux doivent être <strong>propres et lavés</strong>.</li>
+                                                <li>Si vous apportez des mèches, elles doivent être <strong>déjà étirées</strong>.</li>
+                                                <li>Prévoyez d'arriver <strong>5 minutes en avance</strong>.</li>
+                                                <li>Annulation gratuite jusqu'à <strong>24h avant</strong> le rendez-vous.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <button @click="bookingStep = 2" class="px-6 py-3 text-gray-600 hover:text-gray-800 transition"><i class="fa-solid fa-arrow-left mr-2"></i> Retour</button>
+                                    <button @click="nextStep" class="btn-luxe px-8 py-4 rounded-full">Continuer <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- STEP 4 -->
+                            <div v-else-if="bookingStep === 4" class="animate-slide-in-right">
+                                <h3 class="text-2xl md:text-3xl font-serif font-bold mb-8 text-center gradient-text">Confirmation de votre réservation</h3>
+                                <div class="luxury-card p-6 md:p-8 max-w-3xl mx-auto rounded-3xl mb-8">
+                                    <div class="space-y-6">
+                                        <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                                            <div><div class="font-bold text-lg">Prestation principale</div><div class="text-gray-600 text-sm">{{ bookingData.service.duration }} min</div></div>
+                                            <div class="text-right"><div class="font-bold text-xl">{{ bookingData.service.name }}</div><div class="text-brand-gold font-bold text-2xl">{{ bookingData.service.price }}€</div></div>
+                                        </div>
+                                        <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                                            <div><div class="font-bold text-lg">Date & Heure</div><div class="text-gray-600 text-sm">{{ formatDate(bookingData.date) }}</div></div>
+                                            <div class="text-right"><div class="font-bold text-xl">{{ bookingData.time }}</div><div class="text-sm text-gray-600">Durée totale: {{ totalDuration }} min</div></div>
+                                        </div>
+                                        <div v-if="bookingData.extras.length > 0" class="pb-4 border-b border-gray-100">
+                                            <div class="font-bold text-lg mb-4">Services additionnels</div>
+                                            <div class="space-y-3">
+                                                <div v-for="extra in bookingData.extras" :key="extra.id" class="flex justify-between items-center">
+                                                    <div><span class="font-medium">{{ extra.name }}</span><div class="text-sm text-gray-500">{{ extra.duration }} min</div></div>
+                                                    <span class="font-bold text-brand-gold">+{{ extra.price }}€</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div v-if="appliedPromo" class="pb-4 border-b border-gray-100">
+                                            <div class="flex justify-between items-center">
+                                                <div><div class="font-bold text-lg">Code promotionnel</div><div class="text-gray-600 text-sm">{{ appliedPromo.code }}</div></div>
+                                                <div class="text-green-600 font-bold text-xl">-{{ appliedPromo.discount }}{{ appliedPromo.discount_type === 'percentage' ? '%' : '€' }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="pt-4 flex justify-between items-center text-2xl">
+                                            <span class="font-bold">Total</span>
+                                            <span class="font-bold text-brand-gold">{{ finalPrice }}€</span>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-xl mt-6">
+                                            <p class="text-sm text-gray-600 text-center"><i class="fa-solid fa-info-circle mr-2"></i>Paiement sur place uniquement. Annulation gratuite jusqu'à 24h avant.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="max-w-md mx-auto mb-8">
+                                    <div class="flex gap-2">
+                                        <div class="flex-1 relative">
+                                            <i class="fa-solid fa-ticket absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                            <input type="text" v-model="promoCode" placeholder="Code promotionnel"
+                                                   class="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-gold outline-none transition">
+                                        </div>
+                                        <button @click="applyPromoCode" class="bg-brand-gold text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-goldLight transition">Appliquer</button>
+                                    </div>
+                                    <p v-if="promoMessage" :class="promoSuccess ? 'text-green-600' : 'text-red-600'" class="text-sm mt-2 text-center">
+                                        <i :class="promoSuccess ? 'fa-solid fa-check' : 'fa-solid fa-times'" class="mr-1"></i>{{ promoMessage }}
+                                    </p>
+                                </div>
+                                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                                    <button @click="bookingStep = 3" class="px-8 py-3 text-gray-600 hover:text-black font-medium border-2 border-gray-300 rounded-full hover:border-gray-400 transition"><i class="fa-solid fa-pen mr-2"></i>Modifier</button>
+                                    <button @click="confirmBooking" :disabled="loading" class="btn-luxe px-10 py-4 text-lg rounded-full disabled:opacity-50 disabled:cursor-not-allowed">
+                                        <span v-if="loading" class="flex items-center justify-center"><div class="spinner-small mr-2"></div>Confirmation...</span>
+                                        <span v-else><i class="fa-solid fa-check-circle mr-2"></i>Confirmer la réservation</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: ADMIN -->
+            <div v-else-if="currentPage === 'admin'" key="admin" class="min-h-screen bg-gray-50 pt-20">
+                <nav class="bg-white border-b border-gray-200">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between py-4">
+                            <div class="flex items-center mb-4 md:mb-0">
+                                <div class="w-10 h-10 rounded-full bg-brand-gold flex items-center justify-center mr-3"><i class="fa-solid fa-crown text-white"></i></div>
+                                <div><h1 class="text-xl font-bold">Tableau de bord Admin</h1><p class="text-sm text-gray-500">Gestion complète du salon</p></div>
+                            </div>
+                            <div class="flex items-center space-x-6">
+                                <div class="text-center"><div class="text-2xl font-bold text-brand-gold">{{ stats.todayAppointments || 0 }}</div><div class="text-xs text-gray-500">RDV aujourd'hui</div></div>
+                                <div class="text-center"><div class="text-2xl font-bold text-brand-mauve">{{ stats.pendingAppointments || 0 }}</div><div class="text-xs text-gray-500">En attente</div></div>
+                                <div class="text-center"><div class="text-2xl font-bold text-green-600">{{ stats.monthlyRevenue || 0 }}€</div><div class="text-xs text-gray-500">CA ce mois</div></div>
+                                <button @click="logout" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fa-solid fa-sign-out-alt text-xl"></i></button>
+                            </div>
+                        </div>
+                        <div class="flex overflow-x-auto no-scrollbar border-b border-gray-200">
+                            <button v-for="tab in adminTabs" :key="tab.id" @click="adminTab = tab.id"
+                                    :class="adminTab === tab.id ? 'border-b-2 border-brand-gold text-brand-gold' : 'text-gray-500 hover:text-gray-700'"
+                                    class="px-4 py-3 font-medium whitespace-nowrap flex items-center transition-colors">
+                                <i :class="tab.icon + ' mr-2'"></i>{{ tab.label }}
+                                <span v-if="tab.badge" class="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">{{ tab.badge }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+                    <!-- Dashboard -->
+                    <div v-if="adminTab === 'dashboard'" class="animate-fade-in-up">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <div class="flex items-center justify-between mb-4"><div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center"><i class="fa-solid fa-users text-blue-600 text-xl"></i></div><div class="text-right"><div class="text-3xl font-bold">{{ stats.totalClients || 0 }}</div><div class="text-sm text-gray-500">Clients</div></div></div>
+                                <div class="text-sm text-gray-600">+{{ stats.newClientsThisMonth || 0 }} ce mois</div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <div class="flex items-center justify-between mb-4"><div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center"><i class="fa-solid fa-calendar-check text-green-600 text-xl"></i></div><div class="text-right"><div class="text-3xl font-bold">{{ stats.totalAppointments || 0 }}</div><div class="text-sm text-gray-500">RDV total</div></div></div>
+                                <div class="text-sm text-gray-600">{{ stats.completionRate || 0 }}% de complétion</div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <div class="flex items-center justify-between mb-4"><div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center"><i class="fa-solid fa-chart-line text-purple-600 text-xl"></i></div><div class="text-right"><div class="text-3xl font-bold">{{ stats.totalRevenue || 0 }}€</div><div class="text-sm text-gray-500">Chiffre d'affaires</div></div></div>
+                                <div class="text-sm text-gray-600">+{{ stats.revenueGrowth || 0 }}% vs mois dernier</div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <div class="flex items-center justify-between mb-4"><div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center"><i class="fa-solid fa-star text-orange-600 text-xl"></i></div><div class="text-right"><div class="text-3xl font-bold">{{ stats.averageRating || 0 }}/5</div><div class="text-sm text-gray-500">Satisfaction</div></div></div>
+                                <div class="text-sm text-gray-600">{{ stats.totalReviews || 0 }} avis</div>
+                            </div>
+                        </div>
+                        <div class="grid lg:grid-cols-2 gap-8">
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-bold mb-6">Revenus des 30 derniers jours</h3>
+                                <div class="h-64 flex items-end space-x-1">
+                                    <div v-for="day in revenueData" :key="day.date" class="flex-1 flex flex-col items-center">
+                                        <div class="w-full bg-gradient-to-t from-brand-gold to-yellow-200 rounded-t min-h-[2px]"
+                                             :style="{ height: maxRevenue > 0 ? (day.revenue / maxRevenue) * 100 + '%' : '2px' }"></div>
+                                        <div class="text-xs text-gray-500 mt-1 hidden md:block">{{ day.label }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <div class="flex justify-between items-center mb-6"><h3 class="text-lg font-bold">Rendez-vous récents</h3><button @click="adminTab = 'appointments'" class="text-sm text-brand-gold hover:underline">Voir tout</button></div>
+                                <div class="space-y-4">
+                                    <div v-if="recentAppointments.length === 0" class="text-center py-4 text-gray-400">Aucun rendez-vous</div>
+                                    <div v-for="apt in recentAppointments" :key="apt.id" class="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-3"><i class="fa-solid fa-user text-gray-600"></i></div>
+                                            <div><div class="font-medium">{{ apt.client_name || 'Client' }}</div><div class="text-sm text-gray-500">{{ apt.service_name }}</div></div>
+                                        </div>
+                                        <div class="text-right"><div class="font-bold text-brand-gold">{{ apt.total_price || apt.price }}€</div><div class="text-xs text-gray-500">{{ formatDate(apt.date) }}</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-bold mb-6">Actions rapides</h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <button @click="showAddServiceModal = true" class="bg-gradient-to-r from-brand-mauve to-brand-mauveDark text-white p-4 rounded-xl flex flex-col items-center justify-center hover:shadow-lg transition"><i class="fa-solid fa-plus text-2xl mb-2"></i><span class="text-sm">Nouveau service</span></button>
+                                    <button @click="showAddPromoModal = true" class="bg-gradient-to-r from-brand-gold to-yellow-500 text-white p-4 rounded-xl flex flex-col items-center justify-center hover:shadow-lg transition"><i class="fa-solid fa-tag text-2xl mb-2"></i><span class="text-sm">Nouveau code promo</span></button>
+                                    <button @click="exportData('appointments')" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-xl flex flex-col items-center justify-center hover:shadow-lg transition"><i class="fa-solid fa-file-export text-2xl mb-2"></i><span class="text-sm">Exporter RDV</span></button>
+                                    <button @click="sendNewsletter" class="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-xl flex flex-col items-center justify-center hover:shadow-lg transition"><i class="fa-solid fa-envelope text-2xl mb-2"></i><span class="text-sm">Newsletter</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appointments Tab -->
+                    <div v-else-if="adminTab === 'appointments'" class="animate-fade-in-up">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                            <div><h2 class="text-2xl font-bold">Gestion des Réservations</h2><p class="text-gray-500">Gérez et suivez tous les rendez-vous</p></div>
+                            <div class="flex flex-wrap gap-2 mt-4 md:mt-0">
+                                <select v-model="adminFilter.status" class="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                    <option value="">Tous les statuts</option>
+                                    <option value="pending">En attente</option>
+                                    <option value="confirmed">Confirmé</option>
+                                    <option value="completed">Terminé</option>
+                                    <option value="cancelled">Annulé</option>
+                                </select>
+                                <input type="date" v-model="adminFilter.date" class="bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                <div class="relative"><i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i><input type="text" v-model="adminFilter.search" placeholder="Rechercher..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-transparent"></div>
+                                <button @click="refreshAppointments" class="bg-brand-dark text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition"><i class="fa-solid fa-rotate mr-1"></i>Actualiser</button>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date/Heure</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr v-for="apt in filteredAdminAppointments" :key="apt.id" class="hover:bg-gray-50 transition">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3 text-xs font-bold">{{ (apt.client_name || 'C')[0] }}</div>
+                                                    <div><div class="font-medium">{{ apt.client_name || 'Client' }}</div><div class="text-sm text-gray-500">{{ apt.client_phone || '' }}</div></div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4"><div class="font-medium">{{ apt.service_name }}</div><div class="text-sm text-gray-500">{{ apt.duration }} min</div></td>
+                                            <td class="px-6 py-4"><div>{{ formatDate(apt.date) }}</div><div class="text-sm text-gray-500">{{ apt.time }}</div></td>
+                                            <td class="px-6 py-4"><span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" :class="statusBadge(apt.status)">{{ translateStatus(apt.status) }}</span></td>
+                                            <td class="px-6 py-4"><div class="font-bold text-brand-gold">{{ apt.total_price || apt.price }}€</div></td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex space-x-2">
+                                                    <button @click="viewAppointmentDetails(apt)" class="text-blue-600 hover:text-blue-800"><i class="fa-solid fa-eye"></i></button>
+                                                    <button v-if="apt.status === 'pending'" @click="updateAppointmentStatus(apt.id, 'confirmed')" class="text-green-600 hover:text-green-800"><i class="fa-solid fa-check"></i></button>
+                                                    <button v-if="apt.status === 'confirmed'" @click="updateAppointmentStatus(apt.id, 'completed')" class="text-purple-600 hover:text-purple-800"><i class="fa-solid fa-flag-checkered"></i></button>
+                                                    <button @click="cancelAppointment(apt.id)" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-times"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-if="totalAdminAppointments === 0" class="px-6 py-12 text-center"><i class="fa-regular fa-calendar-xmark text-4xl text-gray-400 mb-4"></i><p class="text-gray-500">Aucun rendez-vous trouvé</p></div>
+                            <div v-else class="px-6 py-4 border-t border-gray-200 flex justify-between items-center">
+                                <div class="text-sm text-gray-500">{{ totalAdminAppointments }} résultat(s)</div>
+                                <div class="flex space-x-2">
+                                    <button @click="prevAdminAppointmentsPage" :disabled="adminAppointmentPage === 1" class="px-3 py-1 border rounded disabled:opacity-50"><i class="fa-solid fa-chevron-left"></i></button>
+                                    <span class="px-3 py-1">{{ adminAppointmentPage }}</span>
+                                    <button @click="nextAdminAppointmentsPage" :disabled="adminAppointmentPage >= totalAdminAppointmentPages" class="px-3 py-1 border rounded disabled:opacity-50"><i class="fa-solid fa-chevron-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clients Tab -->
+                    <div v-else-if="adminTab === 'clients'" class="animate-fade-in-up">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+                            <div><h2 class="text-2xl font-bold">Gestion des Clients</h2><p class="text-gray-500">{{ totalClients }} clients inscrits</p></div>
+                            <button @click="exportData('clients')" class="mt-4 md:mt-0 bg-brand-dark text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition"><i class="fa-solid fa-download mr-1"></i>Exporter</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div v-for="client in filteredClients" :key="client.id" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                                            <img :src="client.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(client.name || 'U') + '&background=random&color=fff'" :alt="client.name" class="w-full h-full object-cover">
+                                        </div>
+                                        <div><h4 class="font-bold">{{ client.name }}</h4><div class="text-sm text-gray-500">{{ client.email }}</div></div>
+                                    </div>
+                                    <span class="px-2 py-1 bg-brand-gold/20 text-brand-gold rounded-full text-xs">{{ client.loyalty_tier || 'Membre' }}</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div class="text-center"><div class="text-2xl font-bold">{{ client.total_appointments || 0 }}</div><div class="text-xs text-gray-500">RDV</div></div>
+                                    <div class="text-center"><div class="text-2xl font-bold">{{ client.points || 0 }}</div><div class="text-xs text-gray-500">Points</div></div>
+                                </div>
+                                <div class="mt-6 flex justify-between">
+                                    <button @click="viewClientDetails(client)" class="text-brand-gold hover:underline text-sm">Voir détails</button>
+                                    <button @click="sendClientMessage(client)" class="text-brand-mauve hover:underline text-sm"><i class="fa-solid fa-envelope mr-1"></i>Message</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="filteredClients.length === 0" class="text-center py-12"><p class="text-gray-500">Aucun client trouvé</p></div>
+                    </div>
+
+                    <!-- Services Tab -->
+                    <div v-else-if="adminTab === 'services'" class="animate-fade-in-up">
+                        <div class="flex justify-between items-center mb-8">
+                            <div><h2 class="text-2xl font-bold">Gestion des Services</h2><p class="text-gray-500">{{ services.length }} services disponibles</p></div>
+                            <button @click="showAddServiceModal = true" class="bg-brand-gold text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-goldLight transition flex items-center"><i class="fa-solid fa-plus mr-2"></i>Nouveau service</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div v-for="service in services" :key="service.id" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                                <div class="h-48 relative">
+                                    <img :src="service.image_url" :alt="service.name" class="w-full h-full object-cover">
+                                    <div class="absolute top-3 right-3"><span :class="service.active ? 'bg-green-500' : 'bg-red-500'" class="text-white text-xs px-2 py-1 rounded-full">{{ service.active ? 'Actif' : 'Inactif' }}</span></div>
+                                    <div class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-brand-dark font-bold px-3 py-2 rounded-full">{{ service.price }}€</div>
+                                </div>
+                                <div class="p-6">
+                                    <h4 class="font-bold text-xl mb-2">{{ service.name }}</h4>
+                                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ service.description }}</p>
+                                    <div class="flex justify-between">
+                                        <button @click="editService(service)" class="text-brand-gold hover:underline text-sm">Modifier</button>
+                                        <button @click="toggleServiceStatus(service.id)" :class="service.active ? 'text-red-500' : 'text-green-500'" class="hover:underline text-sm">{{ service.active ? 'Désactiver' : 'Activer' }}</button>
+                                        <button @click="deleteService(service.id)" class="text-gray-400 hover:text-red-500 text-sm"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Promotions Tab -->
+                    <div v-else-if="adminTab === 'promotions'" class="animate-fade-in-up">
+                        <div class="flex justify-between items-center mb-8">
+                            <div><h2 class="text-2xl font-bold">Codes Promotionnels</h2><p class="text-gray-500">{{ promotions.length }} codes</p></div>
+                            <button @click="showAddPromoModal = true" class="bg-brand-mauve text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-mauveDark transition flex items-center"><i class="fa-solid fa-plus mr-2"></i>Nouveau code</button>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Réduction</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Utilisations</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Validité</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr v-for="promo in promotions" :key="promo.id" class="hover:bg-gray-50 transition">
+                                            <td class="px-6 py-4"><div class="font-bold text-lg uppercase">{{ promo.code }}</div></td>
+                                            <td class="px-6 py-4"><div class="font-medium">{{ promo.description }}</div></td>
+                                            <td class="px-6 py-4"><div class="font-bold text-green-600">{{ promo.discount }}{{ promo.discount_type === 'percentage' ? '%' : '€' }}</div></td>
+                                            <td class="px-6 py-4"><div>{{ promo.used_count || 0 }} / {{ promo.max_uses || '∞' }}</div></td>
+                                            <td class="px-6 py-4"><div>{{ formatDate(promo.valid_from) }}</div><div class="text-sm text-gray-500">au {{ formatDate(promo.valid_until) }}</div></td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex space-x-2">
+                                                    <button @click="editPromotion(promo)" class="text-blue-600 hover:text-blue-800"><i class="fa-solid fa-edit"></i></button>
+                                                    <button @click="deletePromotion(promo.id)" class="text-red-600 hover:text-red-800"><i class="fa-solid fa-trash"></i></button>
+                                                    <button @click="copyPromoCode(promo.code)" class="text-gray-600 hover:text-gray-800"><i class="fa-solid fa-copy"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div v-else-if="adminTab === 'settings'" class="animate-fade-in-up">
+                        <h2 class="text-2xl font-bold mb-8">Paramètres du Salon</h2>
+                        <div class="grid lg:grid-cols-2 gap-8">
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-bold mb-6 flex items-center"><i class="fa-solid fa-clock text-brand-gold mr-3"></i>Horaires d'ouverture</h3>
+                                <div class="space-y-4">
+                                    <div v-for="(hours, day) in businessHours" :key="day" class="flex items-center justify-between gap-2">
+                                        <span class="font-medium w-24">{{ day }}</span>
+                                        <input type="time" v-model="hours.open" :disabled="hours.closed" class="border border-gray-300 rounded-lg px-2 py-1 text-sm disabled:opacity-40">
+                                        <span class="text-gray-500">à</span>
+                                        <input type="time" v-model="hours.close" :disabled="hours.closed" class="border border-gray-300 rounded-lg px-2 py-1 text-sm disabled:opacity-40">
+                                        <label class="flex items-center"><input type="checkbox" v-model="hours.closed" class="mr-1"><span class="text-sm">Fermé</span></label>
+                                    </div>
+                                    <button @click="saveBusinessHours" class="w-full bg-brand-gold text-white py-3 rounded-xl font-bold hover:bg-brand-goldLight transition mt-4">Enregistrer</button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-bold mb-6 flex items-center"><i class="fa-solid fa-shop text-brand-mauve mr-3"></i>Informations du salon</h3>
+                                <div class="space-y-4">
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Nom du salon</label><input type="text" v-model="salonInfo.name" class="w-full border border-gray-300 rounded-lg px-3 py-2"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Adresse</label><input type="text" v-model="salonInfo.address" class="w-full border border-gray-300 rounded-lg px-3 py-2"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label><input type="tel" v-model="salonInfo.phone" class="w-full border border-gray-300 rounded-lg px-3 py-2"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Email</label><input type="email" v-model="salonInfo.email" class="w-full border border-gray-300 rounded-lg px-3 py-2"></div>
+                                    <button @click="saveSalonInfo" class="w-full bg-brand-mauve text-white py-3 rounded-xl font-bold hover:bg-brand-mauveDark transition">Mettre à jour</button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-bold mb-6 flex items-center"><i class="fa-solid fa-award text-brand-gold mr-3"></i>Programme de fidélité</h3>
+                                <div class="space-y-4">
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Points par euro dépensé</label><input type="number" v-model="loyaltySettings.points_per_euro" class="w-full border border-gray-300 rounded-lg px-3 py-2"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Points pour 10€ de réduction</label><input type="number" v-model="loyaltySettings.points_for_10e" class="w-full border border-gray-300 rounded-lg px-3 py-2"></div>
+                                    <div><label class="block text-sm font-medium text-gray-700 mb-2">Points offerts à l'inscription</label><input type="number" v-model="loyaltySettings.welcome_points" class="w-full border border-gray-300 rounded-lg px-3 py-2"></div>
+                                    <button @click="saveLoyaltySettings" class="w-full bg-brand-gold text-white py-3 rounded-xl font-bold hover:bg-brand-goldLight transition">Mettre à jour</button>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-bold mb-6 flex items-center"><i class="fa-solid fa-envelope text-brand-mauve mr-3"></i>Notifications email</h3>
+                                <div class="space-y-4">
+                                    <label class="flex items-center justify-between"><span class="font-medium">Confirmation de réservation</span><input type="checkbox" v-model="emailSettings.booking_confirmation" class="h-5 w-5 text-brand-gold"></label>
+                                    <label class="flex items-center justify-between"><span class="font-medium">Rappel 24h avant</span><input type="checkbox" v-model="emailSettings.reminder_24h" class="h-5 w-5 text-brand-gold"></label>
+                                    <label class="flex items-center justify-between"><span class="font-medium">Rappel 2h avant</span><input type="checkbox" v-model="emailSettings.reminder_2h" class="h-5 w-5 text-brand-gold"></label>
+                                    <label class="flex items-center justify-between"><span class="font-medium">Feedback après RDV</span><input type="checkbox" v-model="emailSettings.feedback_request" class="h-5 w-5 text-brand-gold"></label>
+                                    <button @click="saveEmailSettings" class="w-full bg-brand-mauve text-white py-3 rounded-xl font-bold hover:bg-brand-mauveDark transition mt-2">Enregistrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </transition>
+    </main>
+
+    <!-- ===================== MODALS ===================== -->
+
+    <!-- Forgot Password -->
+    <div v-if="showForgotPassword" class="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4" @click.self="showForgotPassword = false">
+        <div class="luxury-card max-w-md w-full p-8 rounded-3xl">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold">Mot de passe oublié</h3><button @click="showForgotPassword = false" class="text-gray-500 hover:text-black"><i class="fa-solid fa-times"></i></button></div>
+            <p class="text-gray-600 mb-6">Entrez votre email pour recevoir un lien de réinitialisation.</p>
+            <input type="email" v-model="forgotPasswordEmail" placeholder="Votre email" class="w-full p-4 border-2 border-gray-200 rounded-xl mb-4 focus:border-brand-gold outline-none">
+            <button @click="sendPasswordReset" class="w-full btn-luxe py-4 rounded-xl font-bold">Envoyer le lien</button>
+        </div>
+    </div>
+
+    <!-- Share Photos -->
+    <div v-if="showShareModal" class="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4" @click.self="showShareModal = false">
+        <div class="luxury-card max-w-md w-full p-8 rounded-3xl">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold gradient-text">Partagez vos photos</h3><button @click="showShareModal = false" class="text-gray-500 hover:text-black"><i class="fa-solid fa-times"></i></button></div>
+            <p class="text-gray-600 mb-6">Envoyez-nous vos plus belles photos et nous les ajouterons à notre galerie avec votre accord.</p>
+            <div class="space-y-4">
+                <input type="text" placeholder="Votre nom" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none">
+                <input type="email" placeholder="email@exemple.com" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none">
+                <input type="text" placeholder="Lien vers vos photos (Instagram, Google Drive...)" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none">
+                <label class="flex items-center"><input type="checkbox" class="mr-3 h-5 w-5 text-brand-mauve"><span class="text-sm text-gray-600">J'accepte que mes photos soient partagées sur le site</span></label>
+            </div>
+            <div class="mt-8 flex justify-end space-x-4">
+                <button @click="showShareModal = false" class="px-6 py-3 text-gray-600 hover:text-black">Annuler</button>
+                <button class="btn-luxe px-6 py-3 rounded-full">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Service -->
+    <div v-if="showAddServiceModal" class="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4" @click.self="closeServiceModal">
+        <div class="luxury-card max-w-2xl w-full p-8 rounded-3xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold gradient-text">{{ editingService ? 'Modifier le service' : 'Nouveau service' }}</h3><button @click="closeServiceModal" class="text-gray-500 hover:text-black"><i class="fa-solid fa-times"></i></button></div>
+            <div class="space-y-6">
+                <div><label class="block text-sm font-bold text-gray-700 mb-2">Nom du service</label><input type="text" v-model="serviceForm.name" placeholder="Ex: Box Braids Goddess" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-2">Description</label><textarea v-model="serviceForm.description" rows="3" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></textarea></div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div><label class="block text-sm font-bold text-gray-700 mb-2">Prix (€)</label><input type="number" v-model.number="serviceForm.price" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                    <div><label class="block text-sm font-bold text-gray-700 mb-2">Durée (minutes)</label><input type="number" v-model.number="serviceForm.duration" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                </div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-2">URL de l'image</label><input type="url" v-model="serviceForm.image_url" placeholder="https://..." class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Tags</label>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <span v-for="tag in serviceForm.tags" :key="tag" class="px-3 py-1 bg-brand-mauve/20 text-brand-mauveDark rounded-full flex items-center">{{ tag }}<button @click="removeTag(tag)" class="ml-2 text-sm"><i class="fa-solid fa-times"></i></button></span>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" v-model="newTag" @keyup.enter="addTag" placeholder="Ajouter un tag" class="flex-1 p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none">
+                        <button @click="addTag" class="bg-brand-mauve text-white px-4 py-3 rounded-xl"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+                <div><label class="flex items-center"><input type="checkbox" v-model="serviceForm.active" class="mr-3 h-5 w-5 text-brand-mauve"><span class="text-sm text-gray-700">Service actif</span></label></div>
+                <button @click="saveService" class="w-full btn-luxe py-4 rounded-xl font-bold text-lg">{{ editingService ? 'Mettre à jour' : 'Créer le service' }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Promo -->
+    <div v-if="showAddPromoModal" class="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4" @click.self="closePromoModal">
+        <div class="luxury-card max-w-2xl w-full p-8 rounded-3xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold gradient-text">{{ editingPromotion ? 'Modifier' : 'Nouveau code promo' }}</h3><button @click="closePromoModal" class="text-gray-500 hover:text-black"><i class="fa-solid fa-times"></i></button></div>
+            <div class="space-y-6">
+                <div><label class="block text-sm font-bold text-gray-700 mb-2">Code</label><input type="text" v-model="promoForm.code" placeholder="Ex: ETE2024" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none uppercase"></div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-2">Description</label><input type="text" v-model="promoForm.description" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div><label class="block text-sm font-bold text-gray-700 mb-2">Type</label><select v-model="promoForm.discount_type" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"><option value="percentage">Pourcentage</option><option value="fixed">Montant fixe</option></select></div>
+                    <div><label class="block text-sm font-bold text-gray-700 mb-2">Réduction</label><input type="number" v-model.number="promoForm.discount" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div><label class="block text-sm font-bold text-gray-700 mb-2">Date de début</label><input type="date" v-model="promoForm.valid_from" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                    <div><label class="block text-sm font-bold text-gray-700 mb-2">Date de fin</label><input type="date" v-model="promoForm.valid_until" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                </div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-2">Utilisations maximum (vide = illimité)</label><input type="number" v-model.number="promoForm.max_uses" class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-brand-mauve outline-none"></div>
+                <div><label class="flex items-center"><input type="checkbox" v-model="promoForm.active" class="mr-3 h-5 w-5 text-brand-mauve"><span class="text-sm text-gray-700">Promotion active</span></label></div>
+                <button @click="savePromotion" class="w-full btn-luxe py-4 rounded-xl font-bold text-lg">{{ editingPromotion ? 'Mettre à jour' : 'Créer la promotion' }}</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms -->
+    <div v-if="showTerms" class="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4" @click.self="showTerms = false">
+        <div class="luxury-card max-w-4xl w-full p-8 rounded-3xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold gradient-text">Conditions Générales</h3><button @click="showTerms = false" class="text-gray-500 hover:text-black"><i class="fa-solid fa-times"></i></button></div>
+            <div class="prose max-w-none text-gray-600">
+                <p class="mb-4">Bienvenue sur le site d'Anna's Touch. En utilisant nos services, vous acceptez ces conditions.</p>
+                <h4 class="font-bold text-lg mt-6 mb-3">1. Réservations et annulations</h4>
+                <ul class="list-disc pl-5 space-y-2"><li>Annulations gratuites jusqu'à 24h avant le rendez-vous.</li><li>En cas d'annulation tardive, des frais peuvent être appliqués.</li></ul>
+                <h4 class="font-bold text-lg mt-6 mb-3">2. Programme de fidélité</h4>
+                <ul class="list-disc pl-5 space-y-2"><li>100 points = 10€ de réduction sur votre prochain rendez-vous.</li><li>Les points expirent après 12 mois d'inactivité.</li></ul>
+            </div>
+            <div class="mt-8 flex justify-end"><button @click="showTerms = false" class="px-6 py-3 bg-brand-dark text-white rounded-xl font-bold hover:bg-gray-800 transition">J'ai compris</button></div>
+        </div>
+    </div>
+
+    <!-- Privacy -->
+    <!-- BUG FIX: Modal privacy restructuré correctement (l'ancien avait un v-if imbriqué mal formé) -->
+    <div v-if="showPrivacy" class="fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4" @click.self="showPrivacy = false">
+        <div class="luxury-card max-w-4xl w-full p-8 rounded-3xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6"><h3 class="text-2xl font-bold gradient-text">Politique de Confidentialité</h3><button @click="showPrivacy = false" class="text-gray-500 hover:text-black"><i class="fa-solid fa-times"></i></button></div>
+            <div class="prose max-w-none text-gray-600">
+                <p class="mb-4">Nous nous engageons à protéger vos données personnelles conformément au RGPD.</p>
+                <h4 class="font-bold text-lg mt-6 mb-3">Données collectées</h4>
+                <ul class="list-disc pl-5 space-y-2"><li>Informations d'identification (nom, email, téléphone)</li><li>Historique des rendez-vous et préférences</li></ul>
+                <h4 class="font-bold text-lg mt-6 mb-3">Utilisation des données</h4>
+                <ul class="list-disc pl-5 space-y-2"><li>Gestion de vos rendez-vous</li><li>Communication concernant vos réservations</li><li>Amélioration de nos services</li></ul>
+                <p class="text-sm text-gray-500 mt-8">Vous disposez d'un droit d'accès, de rectification et de suppression de vos données.</p>
+            </div>
+            <div class="mt-8 flex justify-end"><button @click="showPrivacy = false" class="px-6 py-3 bg-brand-dark text-white rounded-xl font-bold hover:bg-gray-800 transition">J'ai compris</button></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white py-16 rounded-t-[3rem] mt-20 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-4 gap-10">
+            <div class="md:col-span-2">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-brand-gold flex items-center justify-center text-brand-dark"><i class="fa-solid fa-scissors text-xl"></i></div>
+                    <div><h2 class="font-serif text-3xl">Anna's Touch</h2><span class="text-brand-mauve text-sm tracking-widest uppercase">Salon de Coiffure Afro</span></div>
+                </div>
+                <p class="text-gray-400 max-w-md mb-6">L'adresse incontournable pour sublimer vos cheveux texturés.</p>
+                <div class="flex gap-4">
+                    <a href="https://www.instagram.com/annas_touch25" target="_blank" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold uppercase tracking-widest text-sm mb-6 text-brand-gold">Horaires</h4>
+                <ul class="text-gray-400 space-y-2">
+                    <li class="flex justify-between"><span>Lundi - Vendredi</span><span>10h - 19h</span></li>
+                    <li class="flex justify-between"><span>Samedi</span><span>09h - 18h</span></li>
+                    <li class="flex justify-between"><span>Dimanche</span><span class="text-red-400">Fermé</span></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold uppercase tracking-widest text-sm mb-6 text-brand-gold">Contact</h4>
+                <ul class="text-gray-400 space-y-3">
+                    <li class="flex items-start"><i class="fa-solid fa-location-dot text-brand-mauve mr-3 mt-1"></i><span>12 Avenue de la Mode, 75000 Paris</span></li>
+                    <li class="flex items-center"><i class="fa-solid fa-phone text-brand-mauve mr-3"></i><span>01 23 45 67 89</span></li>
+                    <li class="flex items-center"><i class="fa-solid fa-envelope text-brand-mauve mr-3"></i><span>contact@annastouch.com</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-8 border-t border-white/10">
+            <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <div class="mb-4 md:mb-0">&copy; {{ new Date().getFullYear() }} Anna's Touch. Tous droits réservés.</div>
+                <div class="flex gap-6">
+                    <button @click="showTerms = true" class="hover:text-white transition-colors">Conditions d'utilisation</button>
+                    <button @click="showPrivacy = true" class="hover:text-white transition-colors">Confidentialité</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+    if (typeof window.supabase === 'undefined') {
+        alert('ERREUR: Supabase n\'est pas chargé. Vérifiez votre connexion Internet.');
+        return;
+    }
+
+    const { createApp, ref, computed, reactive, onMounted, watch, nextTick } = Vue;
+
+    const SUPABASE_URL = 'https://mlvcvnktshrngvzwrzjc.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sdmN2bmt0c2hybmd2endyempjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk2OTQ3MjgsImV4cCI6MjA4NTI3MDcyOH0.1caMkSgHMI_9cISUF_AJ3f_EqsRN6Rkx_x3cTKBaq9s';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    createApp({
+        setup() {
+            // ===== STATE =====
+            const currentPage = ref('home');
+            const isScrolled = ref(false);
+            const mobileMenuOpen = ref(false);
+            const notificationsOpen = ref(false);
+            const loading = ref(false);
+            const appointmentsLoading = ref(false); // BUG FIX: état de chargement séparé pour les RDV
+            const slotsLoading = ref(false);         // BUG FIX: état de chargement pour les créneaux
+            const adminTab = ref('dashboard');
+
+            const showShareModal = ref(false);
+            const showForgotPassword = ref(false);
+            const showTerms = ref(false);
+            const showPrivacy = ref(false);
+            const showAddServiceModal = ref(false);
+            const showAddPromoModal = ref(false);
+
+            // BUG FIX: currentUser initialisé à null, sera restauré via getSession()
+            const currentUser = ref(null);
+            const loginForm = reactive({ email: '', password: '', remember: false });
+            const signupForm = reactive({ name: '', email: '', phone: '', password: '', confirmPassword: '', agreeTerms: false });
+            const forgotPasswordEmail = ref('');
+            const loginError = ref('');
+
+            const services = ref([]);
+            const galleryImages = ref([]);
+            const testimonials = ref([]);
+            const appointments = ref([]);
+            const notifications = ref([]);
+            const promotions = ref([]);
+            const users = ref([]);
+            const serviceCategories = ref([]);
+            const availableExtras = ref([]);
+            const userReviews = ref([]); // BUG FIX: manquait dans le setup original
+
+            const bookingStep = ref(1);
+            const bookingData = reactive({
+                service: null, date: '', time: '',
+                extras: [],
+                preferences: { movie: '', music: [], instructions: '' }
+            });
+            const availableSlots = ref([]);
+            const serviceCategoryFilter = ref('');
+            const timeFilter = ref('all');
+            const calendarDays = ref([]);
+            const calendarMonth = ref('');
+            const currentCalendarYear = ref(new Date().getFullYear());
+            const currentCalendarMonth = ref(new Date().getMonth());
+            const quickDates = ref([]);
+            const timePeriods = ref(['Matin', 'Après-midi', 'Soir']);
+            const musicGenres = ref(['R&B', 'Hip Hop', 'Afrobeat', 'Pop', 'Jazz', 'Classique']);
+
+            const promoCode = ref('');
+            const appliedPromo = ref(null);
+            const promoMessage = ref('');
+            const promoSuccess = ref(false);
+
+            const adminTabs = ref([
+                { id: 'dashboard', label: 'Tableau de bord', icon: 'fa-solid fa-gauge-high', badge: null },
+                { id: 'appointments', label: 'Réservations', icon: 'fa-solid fa-calendar-days', badge: null },
+                { id: 'clients', label: 'Clients', icon: 'fa-solid fa-users', badge: null },
+                { id: 'services', label: 'Services', icon: 'fa-solid fa-scissors', badge: null },
+                { id: 'promotions', label: 'Promotions', icon: 'fa-solid fa-tags', badge: null },
+                { id: 'settings', label: 'Paramètres', icon: 'fa-solid fa-gear', badge: null }
+            ]);
+            const adminFilter = reactive({ status: '', date: '', search: '' });
+            const adminAppointmentPage = ref(1);
+            const adminPageSize = ref(10);
+
+            const serviceForm = reactive({ name: '', description: '', price: 0, duration: 60, image_url: '', tags: [], category_id: '', active: true });
+            const newTag = ref('');
+            const editingService = ref(null);
+
+            const promoForm = reactive({ code: '', description: '', discount_type: 'percentage', discount: 10, max_discount: 0, min_amount: 0, valid_from: '', valid_until: '', max_uses: null, active: true });
+            const editingPromotion = ref(null);
+
+            const businessHours = reactive({
+                'Lundi': { open: '10:00', close: '19:00', closed: false },
+                'Mardi': { open: '10:00', close: '19:00', closed: false },
+                'Mercredi': { open: '10:00', close: '19:00', closed: false },
+                'Jeudi': { open: '10:00', close: '19:00', closed: false },
+                'Vendredi': { open: '10:00', close: '19:00', closed: false },
+                'Samedi': { open: '09:00', close: '18:00', closed: false },
+                'Dimanche': { open: '', close: '', closed: true }
+            });
+            const emailSettings = reactive({ booking_confirmation: true, reminder_24h: true, reminder_2h: true, feedback_request: true, newsletter: true });
+            const loyaltySettings = reactive({ points_per_euro: 1, points_for_10e: 100, welcome_points: 50 });
+            const salonInfo = reactive({ name: "Anna's Touch", address: "12 Avenue de la Mode, 75000 Paris", phone: "01 23 45 67 89", email: "annastouch@gmail.com" });
+
+            const stats = reactive({
+                clients: 0, appointments: 0, services: 0, todayAppointments: 0,
+                pendingAppointments: 0, monthlyRevenue: 0, totalClients: 0,
+                newClientsThisMonth: 0, totalAppointments: 0, completionRate: 0,
+                totalRevenue: 0, revenueGrowth: 0, averageRating: 0, totalReviews: 0
+            });
+
+            // ===== HELPERS =====
+            let loadingTimeout = null;
+            const setLoading = (value) => {
+                if (value) {
+                    loading.value = true;
+                    loadingTimeout = setTimeout(() => { loading.value = false; }, 10000);
+                } else {
+                    loading.value = false;
+                    if (loadingTimeout) clearTimeout(loadingTimeout);
+                }
+            };
+
+            // BUG FIX: formatDate corrigé pour éviter le décalage UTC
+            const formatDate = (dateString) => {
+                if (!dateString) return '';
+                // Forcer l'interprétation en heure locale
+                const parts = dateString.substring(0, 10).split('-');
+                if (parts.length !== 3) return dateString;
+                const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                return date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            };
+
+            const formatRelativeTime = (dateString) => {
+                if (!dateString) return '';
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMin = Math.floor(diffMs / 60000);
+                const diffHour = Math.floor(diffMin / 60);
+                const diffDay = Math.floor(diffHour / 24);
+                if (diffDay > 0) return `Il y a ${diffDay} jour${diffDay > 1 ? 's' : ''}`;
+                if (diffHour > 0) return `Il y a ${diffHour} heure${diffHour > 1 ? 's' : ''}`;
+                if (diffMin > 0) return `Il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
+                return 'À l\'instant';
+            };
+
+            const formatTimeRemaining = (dateString) => {
+                if (!dateString) return { days: 0, hours: 0, minutes: 0 };
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffMs = date - now;
+                if (diffMs <= 0) return { days: 0, hours: 0, minutes: 0 };
+                const days = Math.floor(diffMs / 86400000);
+                const hours = Math.floor((diffMs % 86400000) / 3600000);
+                const minutes = Math.floor((diffMs % 3600000) / 60000);
+                return { days, hours, minutes };
+            };
+
+            const translateStatus = (status) => {
+                const map = { pending: 'En attente', confirmed: 'Confirmé', completed: 'Terminé', cancelled: 'Annulé', no_show: 'Non présenté' };
+                return map[status] || status;
+            };
+            const statusClass = (status) => {
+                const map = { pending: 'border-orange-200 bg-orange-50', confirmed: 'border-green-200 bg-green-50', completed: 'border-gray-200 bg-gray-50', cancelled: 'border-red-200 bg-red-50' };
+                return map[status] || 'border-gray-200';
+            };
+            const statusBadge = (status) => {
+                const map = { pending: 'bg-orange-100 text-orange-600', confirmed: 'bg-green-100 text-green-600', completed: 'bg-gray-200 text-gray-600', cancelled: 'bg-red-100 text-red-600' };
+                return map[status] || 'bg-gray-100 text-gray-600';
+            };
+            const notificationIcon = (type) => {
+                const map = { appointment: 'fa-solid fa-calendar-check', promotion: 'fa-solid fa-tag', points: 'fa-solid fa-gift', system: 'fa-solid fa-info-circle' };
+                return map[type] || 'fa-solid fa-bell';
+            };
+            const notificationIconClass = (type) => {
+                const map = { appointment: 'bg-green-100 text-green-600', promotion: 'bg-purple-100 text-purple-600', points: 'bg-yellow-100 text-yellow-600', system: 'bg-blue-100 text-blue-600' };
+                return map[type] || 'bg-gray-100 text-gray-600';
+            };
+
+            // ===== SUPABASE DATA FETCHING =====
+            const fetchServices = async () => {
+                try {
+                    const { data, error } = await supabase.from('services').select('*').eq('active', true).order('created_at', { ascending: true });
+                    if (error) throw error;
+                    services.value = data || [];
+                    stats.services = services.value.length;
+                } catch (e) { console.error('fetchServices:', e.message); }
+            };
+
+            const fetchCategories = async () => {
+                try {
+                    const { data, error } = await supabase.from('categories').select('*').eq('active', true).order('created_at', { ascending: true });
+                    if (error) throw error;
+                    serviceCategories.value = data || [];
+                } catch (e) { console.error('fetchCategories:', e.message); }
+            };
+
+            // BUG FIX: fetchAppointments accepte un userId pour ne charger que les bons RDV
+            const fetchAppointments = async (userId = null) => {
+                try {
+                    let query = supabase.from('appointments').select('*');
+                    const uid = userId || currentUser.value?.id;
+                    if (uid && currentUser.value?.role !== 'admin') {
+                        query = query.eq('user_id', uid);
+                    }
+                    const { data, error } = await query.order('date', { ascending: false });
+                    if (error) throw error;
+                    appointments.value = data || [];
+                    stats.appointments = appointments.value.length;
+                    stats.totalAppointments = appointments.value.length;
+                    const today = new Date().toISOString().split('T')[0];
+                    stats.todayAppointments = appointments.value.filter(a => a.date === today).length;
+                    stats.pendingAppointments = appointments.value.filter(a => a.status === 'pending').length;
+                } catch (e) { console.error('fetchAppointments:', e.message); }
+            };
+
+            const fetchUserReviews = async () => {
+                try {
+                    if (!currentUser.value) return;
+                    const { data, error } = await supabase.from('reviews').select('*').eq('user_id', currentUser.value.id).order('created_at', { ascending: false });
+                    if (error) throw error;
+                    userReviews.value = data || [];
+                } catch (e) { console.error('fetchUserReviews:', e.message); }
+            };
+
+            const fetchPromotions = async () => {
+                try {
+                    const { data, error } = await supabase.from('promotions').select('*').eq('active', true).order('created_at', { ascending: false });
+                    if (error) throw error;
+                    promotions.value = data || [];
+                } catch (e) { console.error('fetchPromotions:', e.message); }
+            };
+
+            const fetchUsers = async () => {
+                try {
+                    if (currentUser.value?.role !== 'admin') return;
+                    const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending: false });
+                    if (error) throw error;
+                    users.value = data || [];
+                    stats.clients = users.value.filter(u => u.role === 'client').length;
+                    stats.totalClients = stats.clients;
+                } catch (e) { console.error('fetchUsers:', e.message); }
+            };
+
+            const fetchGallery = async () => {
+                try {
+                    const { data, error } = await supabase.from('gallery').select('*').eq('approved', true).order('created_at', { ascending: false });
+                    if (error) throw error;
+                    galleryImages.value = data || [];
+                } catch (e) { console.error('fetchGallery:', e.message); }
+            };
+
+            const fetchTestimonials = async () => {
+                try {
+                    const { data, error } = await supabase.from('testimonials').select('*').eq('approved', true).order('created_at', { ascending: false });
+                    if (error) throw error;
+                    testimonials.value = data || [];
+                    stats.totalReviews = testimonials.value.length;
+                } catch (e) { console.error('fetchTestimonials:', e.message); }
+            };
+
+            const fetchExtras = async () => {
+                try {
+                    const { data, error } = await supabase.from('extras').select('*').eq('active', true);
+                    if (error) throw error;
+                    availableExtras.value = data || [];
+                } catch (e) { console.error('fetchExtras:', e.message); }
+            };
+
+            const fetchNotifications = async () => {
+                try {
+                    if (!currentUser.value) return;
+                    const { data, error } = await supabase.from('notifications').select('*').eq('user_id', currentUser.value.id).order('created_at', { ascending: false }).limit(20);
+                    if (error) throw error;
+                    notifications.value = data || [];
+                } catch (e) { console.error('fetchNotifications:', e.message); }
+            };
+
+            const fetchBusinessHours = async () => {
+                try {
+                    const { data, error } = await supabase.from('business_hours').select('*');
+                    if (error) throw error;
+                    if (data) {
+                        data.forEach(h => {
+                            if (businessHours[h.day_name]) {
+                                businessHours[h.day_name] = {
+                                    open: h.open_time ? h.open_time.substring(0, 5) : '',
+                                    close: h.close_time ? h.close_time.substring(0, 5) : '',
+                                    closed: h.closed || false
+                                };
+                            }
+                        });
+                    }
+                } catch (e) { console.error('fetchBusinessHours:', e.message); }
+            };
+
+            const fetchSettings = async () => {
+                try {
+                    const { data, error } = await supabase.from('settings').select('*');
+                    if (error) throw error;
+                    if (data) {
+                        data.forEach(s => {
+                            if (s.key === 'loyalty_settings') Object.assign(loyaltySettings, s.value);
+                            if (s.key === 'email_settings') Object.assign(emailSettings, s.value);
+                            if (s.key === 'salon_info') Object.assign(salonInfo, s.value);
+                        });
+                    }
+                } catch (e) { console.error('fetchSettings:', e.message); }
+            };
+
+            const createNotification = async (notif) => {
+                try {
+                    const { data, error } = await supabase.from('notifications').insert(notif).select().single();
+                    if (error) throw error;
+                    return { success: true, data };
+                } catch (e) { return { success: false, error: e.message }; }
+            };
+
+            // BUG FIX: getDayNameFromDate corrigé pour éviter le décalage UTC
+            const getDayNameFromDate = (dateString) => {
+                const parts = dateString.split('-');
+                const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+                return days[date.getDay()];
+            };
+
+            const generateTimeSlots = async () => {
+                if (!bookingData.date || !bookingData.service) return;
+                slotsLoading.value = true;
+                availableSlots.value = [];
+                try {
+                    const dayName = getDayNameFromDate(bookingData.date);
+                    const { data: hoursData, error: hoursError } = await supabase
+                        .from('business_hours').select('*').eq('day_name', dayName).maybeSingle();
+
+                    if (hoursError || !hoursData || hoursData.closed) {
+                        availableSlots.value = [];
+                        return;
+                    }
+
+                    const { data: existingApts } = await supabase
+                        .from('appointments').select('time, duration')
+                        .eq('date', bookingData.date).in('status', ['pending', 'confirmed']);
+
+                    const openTime = hoursData.open_time || '10:00:00';
+                    const closeTime = hoursData.close_time || '19:00:00';
+                    const [openH, openM] = openTime.split(':').map(Number);
+                    const [closeH, closeM] = closeTime.split(':').map(Number);
+                    const openMinutes = openH * 60 + openM;
+                    const closeMinutes = closeH * 60 + closeM;
+                    const serviceDuration = bookingData.service.duration || 60;
+
+                    const bookedSlots = (existingApts || []).map(apt => {
+                        const [h, m] = apt.time.split(':').map(Number);
+                        const start = h * 60 + m;
+                        return { start, end: start + (apt.duration || 60) };
+                    });
+
+                    const slots = [];
+                    for (let t = openMinutes; t + serviceDuration <= closeMinutes; t += 30) {
+                        const hasConflict = bookedSlots.some(b => t < b.end && (t + serviceDuration) > b.start);
+                        const h = Math.floor(t / 60).toString().padStart(2, '0');
+                        const m = (t % 60).toString().padStart(2, '0');
+                        slots.push({ time: `${h}:${m}`, available: !hasConflict });
+                    }
+                    availableSlots.value = slots;
+                } catch (e) {
+                    console.error('generateTimeSlots:', e.message);
+                } finally {
+                    slotsLoading.value = false;
+                }
+            };
+
+            // ===== COMPUTED =====
+            const bookingSteps = computed(() => [
+                { step: 1, description: 'Choisissez votre prestation' },
+                { step: 2, description: 'Sélectionnez votre créneau' },
+                { step: 3, description: 'Ajoutez vos préférences' },
+                { step: 4, description: 'Validez votre réservation' }
+            ]);
+            const bookingProgress = computed(() => (bookingStep.value / 4) * 100);
+
+            const filteredServices = computed(() => {
+                if (!serviceCategoryFilter.value) return services.value;
+                return services.value.filter(s => s.category_id === serviceCategoryFilter.value);
+            });
+
+            const filteredTimeSlots = computed(() => {
+                if (timeFilter.value === 'all') return availableSlots.value;
+                return availableSlots.value.filter(slot => {
+                    const h = parseInt(slot.time.split(':')[0]);
+                    if (timeFilter.value === 'Matin') return h < 12;
+                    if (timeFilter.value === 'Après-midi') return h >= 12 && h < 18;
+                    if (timeFilter.value === 'Soir') return h >= 18;
+                    return true;
+                });
+            });
+
+            const totalDuration = computed(() => {
+                let d = bookingData.service ? bookingData.service.duration : 0;
+                bookingData.extras.forEach(e => d += e.duration || 0);
+                return d;
+            });
+
+            const finalPrice = computed(() => {
+                let price = bookingData.service ? parseFloat(bookingData.service.price) : 0;
+                bookingData.extras.forEach(e => price += parseFloat(e.price || 0));
+                if (appliedPromo.value) {
+                    if (appliedPromo.value.discount_type === 'percentage') {
+                        const disc = (price * appliedPromo.value.discount) / 100;
+                        price -= appliedPromo.value.max_discount ? Math.min(disc, appliedPromo.value.max_discount) : disc;
+                    } else {
+                        price -= appliedPromo.value.discount;
+                    }
+                }
+                return Math.max(0, Math.round(price * 100) / 100);
+            });
+
+            // BUG FIX: myAppointments utilise currentUser.value?.id de manière réactive
+            const myAppointments = computed(() => {
+                if (!currentUser.value) return [];
+                return appointments.value.filter(a => a.user_id === currentUser.value.id);
+            });
+
+            const upcomingAppointmentsCount = computed(() => {
+                return myAppointments.value.filter(a => {
+                    if (!['confirmed', 'pending'].includes(a.status)) return false;
+                    const d = new Date(a.date + 'T' + (a.time || '00:00'));
+                    return d > new Date();
+                }).length;
+            });
+
+            const totalSpent = computed(() => {
+                return myAppointments.value.filter(a => a.status === 'completed').reduce((s, a) => s + parseFloat(a.total_price || a.price || 0), 0);
+            });
+
+            const lastAppointment = computed(() => {
+                return myAppointments.value.filter(a => a.status === 'completed').sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+            });
+
+            const loyaltyTier = computed(() => {
+                const pts = currentUser.value?.points || 0;
+                if (pts >= 1000) return 'Platinum';
+                if (pts >= 500) return 'Gold';
+                if (pts >= 100) return 'Silver';
+                return 'Bronze';
+            });
+
+            const nextTierPoints = computed(() => {
+                const pts = currentUser.value?.points || 0;
+                if (pts < 100) return 100 - pts;
+                if (pts < 500) return 500 - pts;
+                if (pts < 1000) return 1000 - pts;
+                return 0;
+            });
+
+            const nextTier = computed(() => {
+                const pts = currentUser.value?.points || 0;
+                if (pts < 100) return 'Silver';
+                if (pts < 500) return 'Gold';
+                if (pts < 1000) return 'Platinum';
+                return 'Max';
+            });
+
+            const nextTierReward = computed(() => {
+                const map = { Silver: '-10€ sur votre prochain RDV', Gold: '-20€ + Boisson offerte', Platinum: '-30€ + Service gratuit', Max: 'Avantages maximaux atteints' };
+                return map[nextTier.value] || '';
+            });
+
+            const loyaltyProgress = computed(() => {
+                const pts = currentUser.value?.points || 0;
+                if (pts >= 1000) return 100;
+                if (pts >= 500) return ((pts - 500) / 500) * 100;
+                if (pts >= 100) return ((pts - 100) / 400) * 100;
+                return (pts / 100) * 100;
+            });
+
+            const userPromotions = computed(() => {
+                return promotions.value.filter(p => p.active && new Date(p.valid_until) > new Date() && (!p.max_uses || (p.used_count || 0) < p.max_uses));
+            });
+
+            const filteredAdminAppointments = computed(() => {
+                let list = appointments.value;
+                if (adminFilter.status) list = list.filter(a => a.status === adminFilter.status);
+                if (adminFilter.date) list = list.filter(a => a.date === adminFilter.date);
+                if (adminFilter.search) {
+                    const s = adminFilter.search.toLowerCase();
+                    list = list.filter(a => (a.client_name || '').toLowerCase().includes(s) || a.service_name.toLowerCase().includes(s));
+                }
+                const start = (adminAppointmentPage.value - 1) * adminPageSize.value;
+                return list.slice(start, start + adminPageSize.value);
+            });
+
+            const totalAdminAppointments = computed(() => {
+                let list = appointments.value;
+                if (adminFilter.status) list = list.filter(a => a.status === adminFilter.status);
+                if (adminFilter.date) list = list.filter(a => a.date === adminFilter.date);
+                if (adminFilter.search) {
+                    const s = adminFilter.search.toLowerCase();
+                    list = list.filter(a => (a.client_name || '').toLowerCase().includes(s) || a.service_name.toLowerCase().includes(s));
+                }
+                return list.length;
+            });
+
+            const totalAdminAppointmentPages = computed(() => Math.ceil(totalAdminAppointments.value / adminPageSize.value));
+            const filteredClients = computed(() => users.value.filter(u => u.role === 'client'));
+            const totalClients = computed(() => filteredClients.value.length);
+
+            const revenueData = computed(() => {
+                const data = [];
+                for (let i = 29; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const dateStr = d.toISOString().split('T')[0];
+                    const rev = appointments.value.filter(a => a.date === dateStr && a.status === 'completed').reduce((s, a) => s + parseFloat(a.total_price || a.price || 0), 0);
+                    data.push({ date: dateStr, label: d.getDate().toString(), revenue: rev });
+                }
+                return data;
+            });
+
+            const maxRevenue = computed(() => Math.max(...revenueData.value.map(d => d.revenue), 1));
+            const recentAppointments = computed(() => [...appointments.value].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5));
+            const notificationCount = computed(() => notifications.value.filter(n => !n.read).length);
+            const activePromotions = computed(() => promotions.value.filter(p => p.active && new Date(p.valid_until) > new Date()));
+            const todayDate = computed(() => new Date().toISOString().split('T')[0]);
+
+            // ===== CALENDAR =====
+            const generateCalendar = () => {
+                const year = currentCalendarYear.value;
+                const month = currentCalendarMonth.value;
+                const monthNames = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+                calendarMonth.value = `${monthNames[month]} ${year}`;
+
+                const toYMD = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                const today = new Date();
+                const todayYMD = toYMD(today);
+
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const firstDow = (firstDay.getDay() + 6) % 7; // Lundi = 0
+                const days = [];
+
+                // Jours mois précédent
+                const prevLastDay = new Date(year, month, 0).getDate();
+                for (let i = firstDow - 1; i >= 0; i--) {
+                    const d = new Date(year, month - 1, prevLastDay - i);
+                    days.push({ day: d.getDate(), date: toYMD(d), isCurrentMonth: false, isToday: false, isPast: true, hasSlots: false });
+                }
+                // Jours mois courant
+                for (let i = 1; i <= lastDay.getDate(); i++) {
+                    const d = new Date(year, month, i);
+                    const dYMD = toYMD(d);
+                    const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                    const dMid = new Date(year, month, i);
+                    days.push({ day: i, date: dYMD, isCurrentMonth: true, isToday: dYMD === todayYMD, isPast: dMid < todayMid, hasSlots: true });
+                }
+                // Compléter jusqu'à 42 jours
+                let nextDay = 1;
+                while (days.length < 42) {
+                    const d = new Date(year, month + 1, nextDay++);
+                    days.push({ day: d.getDate(), date: toYMD(d), isCurrentMonth: false, isToday: false, isPast: false, hasSlots: true });
+                }
+                calendarDays.value = days;
+
+                // Quick dates
+                const q = [];
+                for (let i = 0; i < 5; i++) {
+                    const d = new Date();
+                    d.setDate(d.getDate() + i);
+                    const labels = ['Aujourd\'hui', 'Demain', 'Dans 2 jours', 'Dans 3 jours', 'Dans 4 jours'];
+                    q.push({ label: labels[i], date: toYMD(d) });
+                }
+                quickDates.value = q;
+            };
+
+            const prevMonth = () => {
+                if (currentCalendarMonth.value === 0) { currentCalendarMonth.value = 11; currentCalendarYear.value--; }
+                else currentCalendarMonth.value--;
+                generateCalendar();
+            };
+
+            const nextMonth = () => {
+                if (currentCalendarMonth.value === 11) { currentCalendarMonth.value = 0; currentCalendarYear.value++; }
+                else currentCalendarMonth.value++;
+                generateCalendar();
+            };
+
+            // ===== AUTH =====
+            // BUG FIX: Fonction centralisée pour charger le profil utilisateur et toutes ses données
+            const loadUserProfile = async (authUserId) => {
+                try {
+                    const { data: userData, error } = await supabase.from('users').select('*').eq('auth_id', authUserId).maybeSingle();
+                    if (error || !userData) return null;
+                    currentUser.value = userData;
+                    // Charger les données spécifiques à l'utilisateur
+                    appointmentsLoading.value = true;
+                    await Promise.allSettled([
+                        fetchAppointments(userData.id),
+                        fetchNotifications(),
+                        fetchUserReviews()
+                    ]);
+                    appointmentsLoading.value = false;
+                    if (userData.role === 'admin') {
+                        await fetchUsers();
+                    }
+                    return userData;
+                } catch (e) {
+                    console.error('loadUserProfile:', e.message);
+                    return null;
+                }
+            };
+
+            const login = async () => {
+                setLoading(true);
+                loginError.value = '';
+                try {
+                    const { data, error } = await supabase.auth.signInWithPassword({ email: loginForm.email, password: loginForm.password });
+                    if (error) throw error;
+
+                    const profile = await loadUserProfile(data.user.id);
+                    if (!profile) throw new Error('Profil introuvable. Contactez le support.');
+
+                    if (loginForm.remember) localStorage.setItem('rememberedEmail', loginForm.email);
+
+                    Swal.fire({ icon: 'success', title: profile.role === 'admin' ? 'Connexion admin' : 'Bienvenue !', timer: 2000, showConfirmButton: false });
+                    currentPage.value = profile.role === 'admin' ? 'admin' : 'client-dashboard';
+                } catch (e) {
+                    loginError.value = e.message.includes('Invalid login') ? 'Email ou mot de passe incorrect' : e.message;
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const signup = async () => {
+                setLoading(true);
+                try {
+                    if (signupForm.password !== signupForm.confirmPassword) throw new Error('Les mots de passe ne correspondent pas');
+                    if (!signupForm.agreeTerms) throw new Error('Veuillez accepter les conditions générales');
+
+                    const { data: authData, error: authError } = await supabase.auth.signUp({ email: signupForm.email, password: signupForm.password });
+                    if (authError) throw authError;
+
+                    const { data: profileData, error: profileError } = await supabase.from('users').insert({
+                        auth_id: authData.user.id, name: signupForm.name, email: signupForm.email,
+                        phone: signupForm.phone, role: 'client', points: 50, loyalty_tier: 'Bronze',
+                        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(signupForm.name)}&background=d4af37&color=121212&bold=true`,
+                        total_appointments: 0, total_spent: 0
+                    }).select().single();
+                    if (profileError) throw profileError;
+
+                    currentUser.value = profileData;
+                    Object.assign(signupForm, { name: '', email: '', phone: '', password: '', confirmPassword: '', agreeTerms: false });
+
+                    Swal.fire({ icon: 'success', title: 'Compte créé !', text: '50 points de bienvenue ajoutés.', timer: 3000, showConfirmButton: false });
+                    currentPage.value = 'client-dashboard';
+                } catch (e) {
+                    Swal.fire({ icon: 'error', title: 'Erreur', text: e.message });
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const logout = async () => {
+                const result = await Swal.fire({ title: 'Se déconnecter ?', icon: 'question', showCancelButton: true, confirmButtonColor: '#d4af37', confirmButtonText: 'Oui', cancelButtonText: 'Non' });
+                if (result.isConfirmed) {
+                    await supabase.auth.signOut();
+                    currentUser.value = null;
+                    appointments.value = [];
+                    notifications.value = [];
+                    userReviews.value = [];
+                    currentPage.value = 'home';
+                }
+            };
+
+            const sendPasswordReset = async () => {
+                if (!forgotPasswordEmail.value) return;
+                try {
+                    const { error } = await supabase.auth.resetPasswordForEmail(forgotPasswordEmail.value, { redirectTo: window.location.origin });
+                    if (error) throw error;
+                    Swal.fire({ icon: 'success', title: 'Email envoyé !', text: 'Vérifiez votre boite mail.' });
+                    showForgotPassword.value = false;
+                } catch (e) {
+                    Swal.fire({ icon: 'error', title: 'Erreur', text: e.message });
+                }
+            };
+
+            // ===== BOOKING =====
+            const startBooking = () => {
+                if (!currentUser.value) {
+                    Swal.fire({ title: 'Connexion requise', text: 'Vous devez être connecté pour réserver', icon: 'info', showCancelButton: true, confirmButtonColor: '#d4af37', confirmButtonText: 'Se connecter', cancelButtonText: 'Annuler' })
+                        .then(r => { if (r.isConfirmed) currentPage.value = 'login'; });
+                    return;
+                }
+                Object.assign(bookingData, { service: null, date: '', time: '', extras: [], preferences: { movie: '', music: [], instructions: '' } });
+                bookingStep.value = 1;
+                currentPage.value = 'booking';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const selectServiceAndBook = (service) => {
+                if (!currentUser.value) { startBooking(); return; }
+                Object.assign(bookingData, { service, date: '', time: '', extras: [], preferences: { movie: '', music: [], instructions: '' } });
+                bookingStep.value = 2;
+                generateCalendar();
+                currentPage.value = 'booking';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const selectService = (service) => { bookingData.service = service; nextStep(); };
+
+            const nextStep = () => {
+                if (bookingStep.value < 4) {
+                    bookingStep.value++;
+                    if (bookingStep.value === 2) { generateCalendar(); }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+
+            const closeBooking = async () => {
+                const r = await Swal.fire({ title: 'Annuler la réservation ?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#d4af37', confirmButtonText: 'Oui, annuler', cancelButtonText: 'Continuer' });
+                if (r.isConfirmed) { currentPage.value = 'home'; bookingStep.value = 1; }
+            };
+
+            const selectDate = async (date) => {
+                const parts = date.split('-');
+                const selectedMid = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                const todayMid = new Date(); todayMid.setHours(0, 0, 0, 0);
+                if (selectedMid < todayMid) { Swal.fire({ icon: 'warning', title: 'Date invalide', text: 'Choisissez une date future.' }); return; }
+                bookingData.date = date;
+                bookingData.time = '';
+                await generateTimeSlots();
+            };
+
+            const selectTime = (time) => {
+                const slot = availableSlots.value.find(s => s.time === time);
+                if (slot && slot.available) bookingData.time = time;
+            };
+
+            const toggleMusicGenre = (genre) => {
+                const idx = bookingData.preferences.music.indexOf(genre);
+                if (idx > -1) bookingData.preferences.music.splice(idx, 1);
+                else bookingData.preferences.music.push(genre);
+            };
+
+            const applyPromoCode = async () => {
+                if (!promoCode.value.trim()) { promoMessage.value = 'Entrez un code'; promoSuccess.value = false; return; }
+                const promo = promotions.value.find(p => p.code === promoCode.value.toUpperCase() && p.active && new Date(p.valid_until) > new Date() && (!p.max_uses || (p.used_count || 0) < p.max_uses));
+                if (promo) {
+                    appliedPromo.value = promo;
+                    promoMessage.value = `Code ${promo.code} appliqué ! -${promo.discount}${promo.discount_type === 'percentage' ? '%' : '€'}`;
+                    promoSuccess.value = true;
+                } else {
+                    appliedPromo.value = null;
+                    promoMessage.value = 'Code invalide ou expiré';
+                    promoSuccess.value = false;
+                }
+            };
+
+            const sendEmailNotification = async (type, payload) => {
+                try {
+                    await fetch('/api/index', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type, ...payload }) });
+                } catch (e) { console.error('Email notification error:', e); }
+            };
+
+            const confirmBooking = async () => {
+                if (!bookingData.service || !bookingData.date || !bookingData.time) {
+                    Swal.fire({ icon: 'warning', title: 'Informations manquantes', text: 'Veuillez compléter tous les champs.' });
+                    return;
+                }
+                setLoading(true);
+                try {
+                    const apt = {
+                        user_id: currentUser.value.id,
+                        service_id: bookingData.service.id,
+                        service_name: bookingData.service.name,
+                        date: bookingData.date,
+                        time: bookingData.time + ':00',
+                        duration: totalDuration.value,
+                        price: finalPrice.value,
+                        total_price: finalPrice.value,
+                        extras: bookingData.extras.map(e => e.name),
+                        preferences: bookingData.preferences,
+                        status: 'pending',
+                        promo_code: appliedPromo.value?.code || null
+                    };
+
+                    const { data, error } = await supabase.from('appointments').insert(apt).select().single();
+                    if (error) throw error;
+
+                    await createNotification({ user_id: currentUser.value.id, title: 'Rendez-vous confirmé', message: `Votre RDV pour "${apt.service_name}" le ${formatDate(apt.date)} à ${bookingData.time} est confirmé.`, type: 'appointment' });
+                    sendEmailNotification('booking', { name: currentUser.value.name, email: currentUser.value.email, service: apt.service_name, nice_date: `${formatDate(apt.date)} à ${bookingData.time}`, raw_date: `${apt.date}T${bookingData.time}` });
+
+                    Swal.fire({ icon: 'success', title: 'Réservation confirmée !', html: `<p>${apt.service_name}<br><strong>${formatDate(apt.date)} à ${bookingData.time}</strong><br><span style="color:#d4af37;font-weight:bold;font-size:1.2em">${apt.price}€</span></p>`, confirmButtonColor: '#d4af37', confirmButtonText: 'Parfait !' });
+
+                    // Reset
+                    Object.assign(bookingData, { service: null, date: '', time: '', extras: [], preferences: { movie: '', music: [], instructions: '' } });
+                    appliedPromo.value = null; promoCode.value = ''; promoMessage.value = '';
+                    bookingStep.value = 1;
+
+                    await fetchAppointments();
+                    await fetchNotifications();
+                    currentPage.value = 'client-dashboard';
+                } catch (e) {
+                    Swal.fire({ icon: 'error', title: 'Erreur', text: e.message });
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            // ===== CLIENT ACTIONS =====
+            const refreshData = async () => {
+                setLoading(true);
+                appointmentsLoading.value = true;
+                await Promise.allSettled([fetchAppointments(), fetchPromotions(), fetchNotifications(), fetchUserReviews()]);
+                appointmentsLoading.value = false;
+                setLoading(false);
+                Swal.fire({ icon: 'success', title: 'Données actualisées', timer: 1500, showConfirmButton: false });
+            };
+
+            const editProfile = () => {
+                Swal.fire({
+                    title: 'Modifier le profil',
+                    html: `<input id="n" class="swal2-input" placeholder="Nom" value="${currentUser.value.name}"><input id="p" class="swal2-input" placeholder="Téléphone" value="${currentUser.value.phone || ''}">`,
+                    showCancelButton: true, confirmButtonColor: '#d4af37', confirmButtonText: 'Enregistrer', cancelButtonText: 'Annuler',
+                    preConfirm: async () => {
+                        const name = document.getElementById('n').value;
+                        const phone = document.getElementById('p').value;
+                        if (!name) { Swal.showValidationMessage('Nom requis'); return false; }
+                        const { error } = await supabase.from('users').update({ name, phone }).eq('id', currentUser.value.id);
+                        if (error) { Swal.showValidationMessage('Erreur lors de la mise à jour'); return false; }
+                        return { name, phone };
+                    }
+                }).then(r => {
+                    if (r.isConfirmed) {
+                        currentUser.value.name = r.value.name;
+                        currentUser.value.phone = r.value.phone;
+                        Swal.fire({ icon: 'success', title: 'Profil mis à jour', timer: 2000, showConfirmButton: false });
+                    }
+                });
+            };
+
+            const canCancel = (apt) => {
+                if (!['pending', 'confirmed'].includes(apt.status)) return false;
+                const d = new Date(apt.date + 'T' + (apt.time || '00:00'));
+                return (d - new Date()) > 24 * 3600 * 1000;
+            };
+
+            const cancelAppointment = (id) => {
+                Swal.fire({ title: 'Annuler ce RDV ?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', confirmButtonText: 'Oui, annuler', cancelButtonText: 'Non' })
+                    .then(async (r) => {
+                        if (r.isConfirmed) {
+                            const { error } = await supabase.from('appointments').update({ status: 'cancelled' }).eq('id', id);
+                            if (error) { Swal.fire({ icon: 'error', title: 'Erreur', text: 'Impossible d\'annuler.' }); return; }
+                            await fetchAppointments();
+                            Swal.fire({ icon: 'success', title: 'RDV annulé', timer: 2000, showConfirmButton: false });
+                        }
+                    });
+            };
+
+            const viewAppointmentDetails = (apt) => {
+                const extras = Array.isArray(apt.extras) ? apt.extras.join(', ') : '';
+                Swal.fire({
+                    title: 'Détails du rendez-vous',
+                    html: `<div class="text-left space-y-2">
+                        <div><b>Service:</b> ${apt.service_name}</div>
+                        <div><b>Date:</b> ${formatDate(apt.date)}</div>
+                        <div><b>Heure:</b> ${apt.time}</div>
+                        <div><b>Durée:</b> ${apt.duration || '—'} min</div>
+                        <div><b>Statut:</b> ${translateStatus(apt.status)}</div>
+                        <div><b>Prix:</b> <span style="color:#d4af37;font-weight:bold">${apt.total_price || apt.price}€</span></div>
+                        ${extras ? `<div><b>Extras:</b> ${extras}</div>` : ''}
+                    </div>`,
+                    confirmButtonColor: '#d4af37', confirmButtonText: 'Fermer'
+                });
+            };
+
+            const addReview = (apt) => {
+                let selectedRating = 5;
+                Swal.fire({
+                    title: 'Noter votre expérience',
+                    html: `<div style="text-align:center;margin-bottom:1rem">
+                        ${[1,2,3,4,5].map(i => `<i class="fa-solid fa-star" data-r="${i}" style="cursor:pointer;font-size:2rem;color:#d4af37;margin:0 2px"></i>`).join('')}
+                    </div><textarea id="cmt" class="swal2-textarea" placeholder="Votre commentaire..."></textarea>`,
+                    showCancelButton: true, confirmButtonColor: '#d4af37', confirmButtonText: 'Envoyer', cancelButtonText: 'Annuler',
+                    didOpen: () => {
+                        document.querySelectorAll('[data-r]').forEach(s => {
+                            s.addEventListener('click', () => {
+                                selectedRating = parseInt(s.dataset.r);
+                                document.querySelectorAll('[data-r]').forEach((star, i) => {
+                                    star.classList.toggle('fa-regular', i >= selectedRating);
+                                });
+                            });
+                        });
+                    },
+                    preConfirm: async () => {
+                        const comment = document.getElementById('cmt').value;
+                        if (!comment.trim()) { Swal.showValidationMessage('Veuillez écrire un commentaire'); return false; }
+                        const { error } = await supabase.from('reviews').insert({ user_id: currentUser.value.id, appointment_id: apt.id, service_name: apt.service_name, rating: selectedRating, comment });
+                        if (error) { Swal.showValidationMessage('Erreur lors de l\'envoi'); return false; }
+                        const newPts = (currentUser.value.points || 0) + 25;
+                        await supabase.from('users').update({ points: newPts }).eq('id', currentUser.value.id);
+                        currentUser.value.points = newPts;
+                        return true;
+                    }
+                }).then(r => {
+                    if (r.isConfirmed) {
+                        Swal.fire({ icon: 'success', title: 'Merci !', text: '+25 points de fidélité ajoutés.', timer: 3000, showConfirmButton: false });
+                        fetchUserReviews();
+                    }
+                });
+            };
+
+            // ===== ADMIN ACTIONS =====
+            const updateAppointmentStatus = async (id, status) => {
+                setLoading(true);
+                try {
+                    const { error } = await supabase.from('appointments').update({ status }).eq('id', id);
+                    if (error) throw error;
+                    await fetchAppointments();
+                    Swal.fire({ icon: 'success', title: 'Statut mis à jour', timer: 2000, showConfirmButton: false });
+                } catch (e) {
+                    Swal.fire({ icon: 'error', title: 'Erreur', text: e.message });
+                } finally { setLoading(false); }
+            };
+
+            const viewClientDetails = (client) => {
+                Swal.fire({ title: client.name, html: `<div class="text-left"><p><b>Email:</b> ${client.email}</p><p><b>Tél:</b> ${client.phone || 'N/A'}</p><p><b>Points:</b> ${client.points || 0}</p><p><b>RDV:</b> ${client.total_appointments || 0}</p><p><b>Total dépensé:</b> ${client.total_spent || 0}€</p></div>`, confirmButtonColor: '#d4af37', confirmButtonText: 'Fermer' });
+            };
+
+            const sendClientMessage = (client) => {
+                Swal.fire({
+                    title: 'Message à ' + client.name,
+                    html: `<input id="subj" class="swal2-input" placeholder="Sujet"><textarea id="msg" class="swal2-textarea" placeholder="Message..."></textarea>`,
+                    showCancelButton: true, confirmButtonColor: '#d4af37', confirmButtonText: 'Envoyer', cancelButtonText: 'Annuler',
+                    preConfirm: async () => {
+                        const title = document.getElementById('subj').value;
+                        const message = document.getElementById('msg').value;
+                        if (!title || !message) { Swal.showValidationMessage('Remplissez tous les champs'); return false; }
+                        await createNotification({ user_id: client.id, title, message, type: 'system' });
+                        return true;
+                    }
+                }).then(r => { if (r.isConfirmed) Swal.fire({ icon: 'success', title: 'Message envoyé', timer: 2000, showConfirmButton: false }); });
+            };
+
+            const editService = (service) => { Object.assign(serviceForm, { ...service, tags: [...(service.tags || [])] }); editingService.value = service.id; showAddServiceModal.value = true; };
+
+            const toggleServiceStatus = async (id) => {
+                const svc = services.value.find(s => s.id === id);
+                if (!svc) return;
+                const { error } = await supabase.from('services').update({ active: !svc.active }).eq('id', id);
+                if (!error) await fetchServices();
+            };
+
+            const deleteService = (id) => {
+                Swal.fire({ title: 'Supprimer ?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', confirmButtonText: 'Supprimer', cancelButtonText: 'Annuler' })
+                    .then(async r => { if (r.isConfirmed) { await supabase.from('services').delete().eq('id', id); await fetchServices(); } });
+            };
+
+            const addTag = () => { if (newTag.value.trim() && !serviceForm.tags.includes(newTag.value.trim())) { serviceForm.tags.push(newTag.value.trim()); newTag.value = ''; } };
+            const removeTag = (tag) => { const i = serviceForm.tags.indexOf(tag); if (i > -1) serviceForm.tags.splice(i, 1); };
+
+            const saveService = async () => {
+                setLoading(true);
+                try {
+                    if (!serviceForm.name.trim()) throw new Error('Nom requis');
+                    const payload = { name: serviceForm.name, description: serviceForm.description, price: serviceForm.price, duration: serviceForm.duration, image_url: serviceForm.image_url, tags: serviceForm.tags, active: serviceForm.active };
+                    if (editingService.value) {
+                        const { error } = await supabase.from('services').update(payload).eq('id', editingService.value);
+                        if (error) throw error;
+                    } else {
+                        const { error } = await supabase.from('services').insert(payload);
+                        if (error) throw error;
+                    }
+                    await fetchServices();
+                    closeServiceModal();
+                    Swal.fire({ icon: 'success', title: 'Service enregistré', timer: 2000, showConfirmButton: false });
+                } catch (e) { Swal.fire({ icon: 'error', title: 'Erreur', text: e.message }); } finally { setLoading(false); }
+            };
+
+            const closeServiceModal = () => { showAddServiceModal.value = false; editingService.value = null; Object.assign(serviceForm, { name: '', description: '', price: 0, duration: 60, image_url: '', tags: [], category_id: '', active: true }); newTag.value = ''; };
+
+            const editPromotion = (p) => { Object.assign(promoForm, p); editingPromotion.value = p.id; showAddPromoModal.value = true; };
+
+            const deletePromotion = (id) => {
+                Swal.fire({ title: 'Supprimer ?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', confirmButtonText: 'Supprimer', cancelButtonText: 'Annuler' })
+                    .then(async r => { if (r.isConfirmed) { await supabase.from('promotions').delete().eq('id', id); await fetchPromotions(); } });
+            };
+
+            const copyPromoCode = (code) => { navigator.clipboard.writeText(code).then(() => Swal.fire({ icon: 'success', title: 'Copié !', timer: 1500, showConfirmButton: false })); };
+
+            const savePromotion = async () => {
+                setLoading(true);
+                try {
+                    if (!promoForm.code.trim()) throw new Error('Code requis');
+                    const payload = { code: promoForm.code.toUpperCase(), description: promoForm.description, discount_type: promoForm.discount_type, discount: promoForm.discount, max_discount: promoForm.max_discount || null, min_amount: promoForm.min_amount || 0, valid_from: promoForm.valid_from, valid_until: promoForm.valid_until, max_uses: promoForm.max_uses || null, active: promoForm.active };
+                    if (editingPromotion.value) { const { error } = await supabase.from('promotions').update(payload).eq('id', editingPromotion.value); if (error) throw error; }
+                    else { const { error } = await supabase.from('promotions').insert(payload); if (error) throw error; }
+                    await fetchPromotions();
+                    closePromoModal();
+                    Swal.fire({ icon: 'success', title: 'Promotion enregistrée', timer: 2000, showConfirmButton: false });
+                } catch (e) { Swal.fire({ icon: 'error', title: 'Erreur', text: e.message }); } finally { setLoading(false); }
+            };
+
+            const closePromoModal = () => { showAddPromoModal.value = false; editingPromotion.value = null; Object.assign(promoForm, { code: '', description: '', discount_type: 'percentage', discount: 10, max_discount: 0, min_amount: 0, valid_from: '', valid_until: '', max_uses: null, active: true }); };
+
+            const saveBusinessHours = async () => {
+                setLoading(true);
+                try {
+                    const rows = Object.entries(businessHours).map(([day_name, h], i) => ({ day_of_week: i, day_name, open_time: h.closed ? null : h.open + ':00', close_time: h.closed ? null : h.close + ':00', closed: h.closed }));
+                    await supabase.from('business_hours').delete().neq('id', 0);
+                    const { error } = await supabase.from('business_hours').insert(rows);
+                    if (error) throw error;
+                    Swal.fire({ icon: 'success', title: 'Horaires enregistrés', timer: 2000, showConfirmButton: false });
+                } catch (e) { Swal.fire({ icon: 'error', title: 'Erreur', text: e.message }); } finally { setLoading(false); }
+            };
+
+            const saveEmailSettings = async () => { await supabase.from('settings').upsert({ key: 'email_settings', value: emailSettings }, { onConflict: 'key' }); Swal.fire({ icon: 'success', title: 'Paramètres enregistrés', timer: 2000, showConfirmButton: false }); };
+            const saveLoyaltySettings = async () => { await supabase.from('settings').upsert({ key: 'loyalty_settings', value: loyaltySettings }, { onConflict: 'key' }); Swal.fire({ icon: 'success', title: 'Paramètres enregistrés', timer: 2000, showConfirmButton: false }); };
+            const saveSalonInfo = async () => { await supabase.from('settings').upsert({ key: 'salon_info', value: salonInfo }, { onConflict: 'key' }); Swal.fire({ icon: 'success', title: 'Informations enregistrées', timer: 2000, showConfirmButton: false }); };
+
+            const exportData = async (type) => {
+                try {
+                    const { data } = await supabase.from(type === 'appointments' ? 'appointments' : 'users').select('*');
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+                    a.download = `${type}_${new Date().toISOString().split('T')[0]}.json`;
+                    a.click();
+                    Swal.fire({ icon: 'success', title: 'Export réussi', timer: 2000, showConfirmButton: false });
+                } catch (e) { Swal.fire({ icon: 'error', title: 'Erreur', text: e.message }); }
+            };
+
+            const sendNewsletter = () => Swal.fire({ icon: 'info', title: 'Newsletter', text: 'Fonctionnalité à connecter à votre service d\'email.' });
+            const refreshAppointments = async () => { setLoading(true); await fetchAppointments(); setLoading(false); Swal.fire({ icon: 'success', title: 'Actualisé', timer: 1500, showConfirmButton: false }); };
+            const prevAdminAppointmentsPage = () => { if (adminAppointmentPage.value > 1) adminAppointmentPage.value--; };
+            const nextAdminAppointmentsPage = () => { if (adminAppointmentPage.value < totalAdminAppointmentPages.value) adminAppointmentPage.value++; };
+
+            const toggleNotifications = () => { notificationsOpen.value = !notificationsOpen.value; };
+            const handleNotificationClick = async (notif) => {
+                await supabase.from('notifications').update({ read: true }).eq('id', notif.id);
+                notificationsOpen.value = false;
+                if (notif.type === 'appointment') currentPage.value = 'client-dashboard';
+                await fetchNotifications();
+            };
+            const markAsRead = async (id) => { await supabase.from('notifications').update({ read: true }).eq('id', id); await fetchNotifications(); };
+
+            const goToHome = () => { currentPage.value = 'home'; mobileMenuOpen.value = false; window.scrollTo({ top: 0, behavior: 'smooth' }); };
+            const goToVideo = () => { currentPage.value = 'home'; mobileMenuOpen.value = false; nextTick(() => { document.getElementById('video-film')?.scrollIntoView({ behavior: 'smooth' }); }); };
+            const scrollToSection = (id) => {
+                if (currentPage.value !== 'home') { currentPage.value = 'home'; setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 100); }
+                else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+                mobileMenuOpen.value = false;
+            };
+            const playVideo = () => Swal.fire({ title: 'Vidéo bientôt disponible', icon: 'info', confirmButtonColor: '#d4af37' });
+            const loadMoreServices = () => {};
+            const loadMoreGallery = () => {};
+
+            // ===== LIFECYCLE =====
+            onMounted(async () => {
+                window.addEventListener('scroll', () => { isScrolled.value = window.scrollY > 50; });
+                window.addEventListener('keydown', (e) => { if (e.key === 'Escape') { showPrivacy.value = false; showTerms.value = false; showShareModal.value = false; showForgotPassword.value = false; } });
+
+                // Charger les données publiques d'abord
+                setLoading(true);
+                await Promise.allSettled([fetchServices(), fetchCategories(), fetchGallery(), fetchTestimonials(), fetchExtras(), fetchPromotions(), fetchBusinessHours(), fetchSettings()]);
+
+                // BUG FIX MAJEUR: Restaurer la session Supabase et charger le profil
+                // C'est ça qui causait le dashboard vierge au rechargement
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    await loadUserProfile(session.user.id);
+                }
+
+                // Récupérer email mémorisé
+                const rem = localStorage.getItem('rememberedEmail');
+                if (rem) { loginForm.email = rem; loginForm.remember = true; }
+
+                setLoading(false);
+
+                // Écouter les changements d'auth
+                supabase.auth.onAuthStateChange(async (event, session) => {
+                    if (event === 'SIGNED_IN' && session) {
+                        await loadUserProfile(session.user.id);
+                    } else if (event === 'SIGNED_OUT') {
+                        currentUser.value = null;
+                        appointments.value = [];
+                        notifications.value = [];
+                        userReviews.value = [];
+                    }
+                });
+            });
+
+            watch([() => appointments.value.length, () => users.value.length], () => {
+                // Recalcul stats
+                const now = new Date();
+                const m = now.getMonth(), y = now.getFullYear();
+                stats.monthlyRevenue = appointments.value.filter(a => { const d = new Date(a.date); return d.getMonth() === m && d.getFullYear() === y && a.status === 'completed'; }).reduce((s, a) => s + parseFloat(a.total_price || a.price || 0), 0);
+                stats.totalRevenue = appointments.value.filter(a => a.status === 'completed').reduce((s, a) => s + parseFloat(a.total_price || a.price || 0), 0);
+                stats.completionRate = appointments.value.length > 0 ? Math.round((appointments.value.filter(a => a.status === 'completed').length / appointments.value.length) * 100) : 0;
+            });
+
+            watch([() => adminFilter.status, () => adminFilter.date, () => adminFilter.search], () => { adminAppointmentPage.value = 1; });
+
+            return {
+                currentPage, isScrolled, mobileMenuOpen, notificationsOpen, loading, appointmentsLoading, slotsLoading, adminTab,
+                showShareModal, showForgotPassword, showTerms, showPrivacy, showAddServiceModal, showAddPromoModal,
+                currentUser, loginForm, signupForm, forgotPasswordEmail, loginError,
+                services, galleryImages, testimonials, appointments, notifications, promotions, users,
+                serviceCategories, availableExtras, userReviews,
+                bookingStep, bookingData, availableSlots, serviceCategoryFilter, timeFilter,
+                calendarDays, calendarMonth, quickDates, timePeriods, musicGenres,
+                promoCode, appliedPromo, promoMessage, promoSuccess,
+                adminTabs, adminFilter, adminAppointmentPage, adminPageSize,
+                serviceForm, newTag, editingService, promoForm, editingPromotion,
+                businessHours, emailSettings, loyaltySettings, salonInfo, stats,
+                bookingSteps, bookingProgress, filteredServices, filteredTimeSlots,
+                totalDuration, finalPrice, myAppointments, upcomingAppointmentsCount,
+                totalSpent, lastAppointment, loyaltyTier, nextTierPoints, nextTier,
+                nextTierReward, loyaltyProgress, userPromotions,
+                filteredAdminAppointments, totalAdminAppointments, totalAdminAppointmentPages,
+                filteredClients, totalClients, revenueData, maxRevenue, recentAppointments,
+                notificationCount, activePromotions, todayDate,
+                goToHome, goToVideo, scrollToSection,
+                login, signup, logout, sendPasswordReset,
+                startBooking, selectServiceAndBook, selectService,
+                nextStep, closeBooking, generateCalendar, prevMonth, nextMonth,
+                selectDate, selectTime, toggleMusicGenre, applyPromoCode, confirmBooking,
+                refreshData, editProfile, canCancel, cancelAppointment, viewAppointmentDetails, addReview,
+                updateAppointmentStatus, viewClientDetails, sendClientMessage,
+                editService, toggleServiceStatus, deleteService, addTag, removeTag, saveService, closeServiceModal,
+                editPromotion, deletePromotion, copyPromoCode, savePromotion, closePromoModal,
+                saveBusinessHours, saveEmailSettings, saveLoyaltySettings, saveSalonInfo,
+                exportData, sendNewsletter, refreshAppointments,
+                prevAdminAppointmentsPage, nextAdminAppointmentsPage,
+                toggleNotifications, handleNotificationClick, markAsRead,
+                notificationIcon, notificationIconClass,
+                formatDate, formatRelativeTime, formatTimeRemaining,
+                translateStatus, statusClass, statusBadge, playVideo,
+                loadMoreServices, loadMoreGallery
+            };
+        }
+    }).mount('#app');
+});
+</script>
+</body>
+</html>
