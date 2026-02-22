@@ -1097,9 +1097,10 @@
                                     <div class="text-center"><div class="text-2xl font-bold">{{ client.total_appointments || 0 }}</div><div class="text-xs text-gray-500">RDV</div></div>
                                     <div class="text-center"><div class="text-2xl font-bold">{{ client.points || 0 }}</div><div class="text-xs text-gray-500">Points</div></div>
                                 </div>
-                                <div class="mt-6 flex justify-between">
-                                    <button @click="viewClientDetails(client)" class="text-brand-gold hover:underline text-sm">Voir détails</button>
-                                    <button @click="sendClientMessage(client)" class="text-brand-mauve hover:underline text-sm"><i class="fa-solid fa-envelope mr-1"></i>Message</button>
+                                <div class="mt-6 flex justify-between items-center">
+                                    <button @click="viewClientDetails(client)" class="text-brand-gold hover:underline text-sm">Détails</button>
+                                    <button @click="sendClientMessage(client)" class="text-brand-mauve hover:underline text-sm"><i class="fa-solid fa-envelope mr-1"></i>Email</button>
+                                    <button @click="deleteClient(client)" class="text-red-500 hover:text-red-700 text-sm"><i class="fa-solid fa-trash"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -2156,6 +2157,9 @@ window.addEventListener('DOMContentLoaded', function() {
                 setLoading(true);
                 try {
                     const apt = {
+                        client_email: currentUser.value.email, // AJOUT IMPORTANT ICI
+                        client_name: currentUser.value.name,   // AJOUT IMPORTANT ICI
+                        client_phone: currentUser.value.phone, // AJOUT IMPORTANT ICI
                         user_id: currentUser.value.id,
                         service_id: bookingData.service.id,
                         service_name: bookingData.service.name,
@@ -2303,18 +2307,17 @@ window.addEventListener('DOMContentLoaded', function() {
                     const { error } = await supabase.from('appointments').update({ status }).eq('id', id);
                     if (error) throw error;
                     if (status === 'confirmed') {
-                    const apt = appointments.value.find(a => a.id === id);
-                    // Attention : assure-toi que ton objet apt contient bien l'email du client (ex: apt.client_email)
-                    // S'il ne l'a pas, il faudra faire une requête Supabase pour le récupérer via apt.user_id
-                    if (apt) {
-                        sendEmailNotification('admin_confirmation', { 
-                            name: apt.client_name, 
-                            email: apt.client_email, // Doit être disponible dans tes données
-                            service: apt.service_name, 
-                            nice_date: formatDate(apt.date) 
-                        });
+                        const apt = appointments.value.find(a => a.id === id);
+                        if (apt && apt.client_email) {
+                            sendEmailNotification('admin_confirmation', { 
+                                name: apt.client_name || 'Client', 
+                                email: apt.client_email, 
+                                service: apt.service_name, 
+                                nice_date: `${formatDate(apt.date)} à ${apt.time}`,
+                                raw_date: `${apt.date}T${apt.time.substring(0,5)}` // Format attendu par le calendrier
+                            });
+                        }
                     }
-                }
                     await fetchAppointments();
                     Swal.fire({ icon: 'success', title: 'Statut mis à jour', timer: 2000, showConfirmButton: false });
                 } catch (e) {
@@ -2325,20 +2328,47 @@ window.addEventListener('DOMContentLoaded', function() {
             const viewClientDetails = (client) => {
                 Swal.fire({ title: client.name, html: `<div class="text-left"><p><b>Email:</b> ${client.email}</p><p><b>Tél:</b> ${client.phone || 'N/A'}</p><p><b>Points:</b> ${client.points || 0}</p><p><b>RDV:</b> ${client.total_appointments || 0}</p><p><b>Total dépensé:</b> ${client.total_spent || 0}€</p></div>`, confirmButtonColor: '#d4af37', confirmButtonText: 'Fermer' });
             };
+            const deleteClient = (client) => {
+                Swal.fire({ 
+                    title: `Supprimer ${client.name} ?`, 
+                    text: "Cette action est irréversible.",
+                    icon: 'warning', 
+                    showCancelButton: true, 
+                    confirmButtonColor: '#EF4444', 
+                    confirmButtonText: 'Oui, supprimer', 
+                    cancelButtonText: 'Annuler' 
+                }).then(async r => { 
+                    if (r.isConfirmed) { 
+                        await supabase.from('users').delete().eq('id', client.id); 
+                        await fetchUsers(); // Rafraîchit la liste
+                        Swal.fire({ icon: 'success', title: 'Client supprimé', timer: 2000, showConfirmButton: false });
+                    } 
+                });
+            };
 
             const sendClientMessage = (client) => {
                 Swal.fire({
-                    title: 'Message à ' + client.name,
-                    html: `<input id="subj" class="swal2-input" placeholder="Sujet"><textarea id="msg" class="swal2-textarea" placeholder="Message..."></textarea>`,
+                    title: 'Email à ' + client.name,
+                    html: `<input id="subj" class="swal2-input" placeholder="Sujet"><textarea id="msg" class="swal2-textarea" placeholder="Votre message..."></textarea>`,
                     showCancelButton: true, confirmButtonColor: '#d4af37', confirmButtonText: 'Envoyer', cancelButtonText: 'Annuler',
                     preConfirm: async () => {
-                        const title = document.getElementById('subj').value;
+                        const subject = document.getElementById('subj').value;
                         const message = document.getElementById('msg').value;
-                        if (!title || !message) { Swal.showValidationMessage('Remplissez tous les champs'); return false; }
-                        await createNotification({ user_id: client.id, title, message, type: 'system' });
+                        if (!subject || !message) { Swal.showValidationMessage('Remplissez tous les champs'); return false; }
+                        
+                        // 1. Créer la notification interne (cloche)
+                        await createNotification({ user_id: client.id, title: subject, message, type: 'system' });
+                        
+                        // 2. Envoyer le vrai email !
+                        sendEmailNotification('direct_message', {
+                            name: client.name,
+                            email: client.email,
+                            subject: subject,
+                            message: message
+                        });
                         return true;
                     }
-                }).then(r => { if (r.isConfirmed) Swal.fire({ icon: 'success', title: 'Message envoyé', timer: 2000, showConfirmButton: false }); });
+                }).then(r => { if (r.isConfirmed) Swal.fire({ icon: 'success', title: 'Email envoyé', timer: 2000, showConfirmButton: false }); });
             };
 
             const editService = (service) => { Object.assign(serviceForm, { ...service, tags: [...(service.tags || [])] }); editingService.value = service.id; showAddServiceModal.value = true; };
