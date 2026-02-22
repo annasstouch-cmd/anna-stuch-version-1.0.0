@@ -2302,6 +2302,19 @@ window.addEventListener('DOMContentLoaded', function() {
                 try {
                     const { error } = await supabase.from('appointments').update({ status }).eq('id', id);
                     if (error) throw error;
+                    if (status === 'confirmed') {
+                    const apt = appointments.value.find(a => a.id === id);
+                    // Attention : assure-toi que ton objet apt contient bien l'email du client (ex: apt.client_email)
+                    // S'il ne l'a pas, il faudra faire une requête Supabase pour le récupérer via apt.user_id
+                    if (apt) {
+                        sendEmailNotification('admin_confirmation', { 
+                            name: apt.client_name, 
+                            email: apt.client_email, // Doit être disponible dans tes données
+                            service: apt.service_name, 
+                            nice_date: formatDate(apt.date) 
+                        });
+                    }
+                }
                     await fetchAppointments();
                     Swal.fire({ icon: 'success', title: 'Statut mis à jour', timer: 2000, showConfirmButton: false });
                 } catch (e) {
