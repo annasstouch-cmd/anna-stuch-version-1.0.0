@@ -2307,17 +2307,23 @@ window.addEventListener('DOMContentLoaded', function() {
                     const { error } = await supabase.from('appointments').update({ status }).eq('id', id);
                     if (error) throw error;
                     if (status === 'confirmed') {
-                        const apt = appointments.value.find(a => a.id === id);
-                        if (apt && apt.client_email) {
-                            sendEmailNotification('admin_confirmation', { 
-                                name: apt.client_name || 'Client', 
-                                email: apt.client_email, 
-                                service: apt.service_name, 
-                                nice_date: `${formatDate(apt.date)} à ${apt.time}`,
-                                raw_date: `${apt.date}T${apt.time.substring(0,5)}` // Format attendu par le calendrier
-                            });
-                        }
-                    }
+                                const apt = appointments.value.find(a => a.id === id);
+                                
+                                if (apt) {
+                                    // On cherche les infos du client dans la base des utilisateurs
+                                    const client = users.value.find(u => u.id === apt.user_id);
+                                    
+                                    if (client && client.email) {
+                                        sendEmailNotification('admin_confirmation', { 
+                                            name: client.name || 'Client', 
+                                            email: client.email, 
+                                            service: apt.service_name, 
+                                            nice_date: `${formatDate(apt.date)} à ${apt.time}`,
+                                            raw_date: `${apt.date}T${apt.time.substring(0,5)}` 
+                                        });
+                                    }
+                                }
+                            }
                     await fetchAppointments();
                     Swal.fire({ icon: 'success', title: 'Statut mis à jour', timer: 2000, showConfirmButton: false });
                 } catch (e) {
