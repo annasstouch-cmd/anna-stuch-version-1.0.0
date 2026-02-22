@@ -111,14 +111,14 @@ def send_email():
                 body_admin = f"Nouvelle réservation reçue !\n\nClient : {client_name}\nEmail : {client_email}\nPrestation : {service_name}\nDate : {nice_date}\n\nAjoutez la pièce jointe à votre agenda pour avoir le rappel."
                 send_mail(ADMIN_EMAIL, f"🔴 NOUVELLE RÉSERVATION - {client_name}", body_admin, ics_data)
                  # ==========================================
-                # CAS 3 : CONFIRMATION ADMIN
-                # ==========================================
-                elif email_type == 'admin_confirmation':
-                    service_name = data.get('service')
-                    nice_date = data.get('nice_date')
-                    
-                    body_client = f"Bonjour {client_name},\n\nBonne nouvelle ! Votre réservation pour {service_name} le {nice_date} a été confirmée par Anna's Touch.\n\nÀ très bientôt au salon !"
-                    send_mail(client_email, "Votre rendez-vous est confirmé ! ✅", body_client)
+                 # CAS 3 : CONFIRMATION ADMIN
+                 # ==========================================
+                 elif email_type == 'admin_confirmation':
+                      service_name = data.get('service')
+                      nice_date = data.get('nice_date')
+                        
+                      body_client = f"Bonjour {client_name},\n\nBonne nouvelle ! Votre réservation pour {service_name} le {nice_date} a été confirmée par Anna's Touch.\n\nÀ très bientôt au salon !"
+                      send_mail(client_email, "Votre rendez-vous est confirmé ! ✅", body_client)
 
         return jsonify({"status": "Emails envoyés avec succès !"}), 200
 
