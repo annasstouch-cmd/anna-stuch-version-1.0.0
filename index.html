@@ -2034,6 +2034,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     if (profileError) throw profileError;
 
                     currentUser.value = profileData;
+                    sendEmailNotification('signup', { name: signupForm.name, email: signupForm.email });
                     Object.assign(signupForm, { name: '', email: '', phone: '', password: '', confirmPassword: '', agreeTerms: false });
 
                     Swal.fire({ icon: 'success', title: 'Compte créé !', text: '50 points de bienvenue ajoutés.', timer: 3000, showConfirmButton: false });
